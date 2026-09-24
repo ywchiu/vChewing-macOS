@@ -246,6 +246,13 @@ extension LXAssembly {
     /// 同樣由宿主依偏好設定決定掛不掛。
     public var smartPreferenceStore: SmartPreferenceStore?
 
+    /// 詞組學習儲存體（Phase 5）。
+    ///
+    /// 升格後的詞組經由 `mountGramSupplier` 以掛載來源的身分供給候選，
+    /// **不寫進使用者詞庫**——那是使用者自己擁有的資產，程式自動往裡面塞東西是
+    /// 不可逆的污染。理由詳見 `SmartPhraseStore` 的說明。
+    public var smartPhraseStore: SmartPhraseStore?
+
     /// 當前前景 app 的粗類別，由宿主於語境變動時寫入。
     ///
     /// 只有一個用途：讓 POM 的注入端知道「現在人在哪一類 app 裡」，好攔下

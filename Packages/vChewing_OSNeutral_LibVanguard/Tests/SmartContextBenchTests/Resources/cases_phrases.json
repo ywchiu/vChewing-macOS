@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "name": "phrase-promotion",
+  "cases": [
+    {
+      "id": "phrase-wangdaming-thrice",
+      "kind": "phrasePromotion",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄨㄤˊ", "ㄉㄚˋ", "ㄇㄧㄥˊ"],
+      "expected": "王大明",
+      "competitors": ["王大名"],
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["phrase", "proper-noun", "name"]
+    },
+    {
+      "id": "phrase-wangdaming-once",
+      "kind": "phrasePromotion",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄨㄤˊ", "ㄉㄚˋ", "ㄇㄧㄥˊ"],
+      "expected": "王大明",
+      "competitors": ["王大名"],
+      "repeatCount": 1,
+      "appCategory": "chat",
+      "tags": ["phrase", "proper-noun", "below-threshold"]
+    },
+    {
+      "id": "phrase-chenjianzhi-thrice",
+      "kind": "phrasePromotion",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄔㄣˊ", "ㄐㄧㄢˋ", "ㄓˋ"],
+      "expected": "陳建志",
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["phrase", "proper-noun", "name"]
+    },
+    {
+      "id": "phrase-limeiling-thrice",
+      "kind": "phrasePromotion",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄌㄧˇ", "ㄇㄟˇ", "ㄌㄧㄥˊ"],
+      "expected": "李美玲",
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["phrase", "proper-noun", "name"]
+    },
+    {
+      "id": "phrase-huangwenbin-thrice",
+      "kind": "phrasePromotion",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄏㄨㄤˊ", "ㄨㄣˊ", "ㄅㄧㄣ"],
+      "expected": "黃文彬",
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["phrase", "proper-noun", "name"]
+    }
+  ]
+}

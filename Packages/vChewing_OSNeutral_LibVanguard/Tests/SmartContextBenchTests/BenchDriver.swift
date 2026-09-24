@@ -119,6 +119,7 @@ public final class BenchDriver {
     case .ranking: runRanking(benchCase)
     case .correctionLearning: runCorrectionLearning(benchCase)
     case .appSwitching: runAppSwitching(benchCase)
+    case .phrasePromotion: runPhrasePromotion(benchCase)
     }
   }
 
@@ -136,6 +137,10 @@ public final class BenchDriver {
     // 跨 session 的那一份也要清：它掛在 `LXFacade` 上、壽命比單一案例長得多，
     // 不清的話前一筆案例學到的東西會滲進下一筆，量到的就不是各案例自己的行為了。
     lx.clearSmartPreferenceData()
+    // 已學詞組同理，而且漏掉它的後果更難察覺：`phrase-*-once` 那筆是用來證明
+    // 「一次確認不得升格」的**對照組**，若前一筆三次確認的案例把詞組留了下來，
+    // 對照組會通過——而一個「通過」的對照組看起來跟成功一模一樣。
+    lx.clearSmartPhraseData()
   }
 
   /// 僅供診斷測試取用內部 handler。
@@ -297,6 +302,54 @@ public final class BenchDriver {
     }
     // 訓練完畢，切換到「另一個 app」再量。這一行就是整個 app-switching 案例的要點。
     setAppCategory(benchCase.appCategory)
+    handler.clear()
+    typeSyllables(benchCase.precedingReadings, measured: true)
+    guard typeSyllables(benchCase.readings, measured: true) else {
+      return makeSkipped(benchCase, reason: "reading not present in the active lexicon")
+    }
+    return makeOutcome(benchCase, candidates: currentCandidates(measured: true))
+  }
+
+  /// 詞組升格：重複「逐字手動組出同一個詞組 → 遞交」若干輪，最後檢查該詞組是否
+  /// 已經成為一個完整的候選。
+  ///
+  /// 訓練的每一輪都走生產端路徑：逐格移動游標、自候選窗選出該位置的單字
+  /// （`consolidateNode(explicitlyChosen: true)`，這才會把 `isExplicit` 立起來），
+  /// 最後呼叫 `committableDisplayText()`——也就是生產端真正遞交時會走的那一支，
+  /// 詞組觀察即掛在它上面。
+  private func runPhrasePromotion(_ benchCase: BenchCase) -> BenchCaseOutcome {
+    resetAll()
+    setAppCategory(benchCase.appCategory)
+    let expectedCharacters = benchCase.expected.map(String.init)
+    guard expectedCharacters.count == benchCase.readings.count else {
+      return makeSkipped(benchCase, reason: "expected value length does not match the reading count")
+    }
+    let rounds = Swift.max(1, benchCase.repeatCount)
+    for _ in 0 ..< rounds {
+      handler.clear()
+      typeSyllables(benchCase.precedingReadings, measured: false)
+      guard typeSyllables(benchCase.readings, measured: false) else {
+        return makeSkipped(benchCase, reason: "reading not present in the active lexicon")
+      }
+      let base = benchCase.precedingReadings.count
+      for (offset, character) in expectedCharacters.enumerated() {
+        // 把游標挪到該音節之後，好讓 `actualNodeCursorPosition` 指向那一格。
+        handler.assembler.cursor = base + offset + 1
+        let candidates = handler.generateArrayOfCandidates(fixOrder: false)
+        guard let target = candidates.first(where: {
+          $0.value == character && $0.keyArray.count == 1
+        }) else {
+          return makeSkipped(
+            benchCase,
+            reason: "single-character candidate '\(character)' unavailable at offset \(offset)"
+          )
+        }
+        handler.consolidateNode(candidate: target, respectCursorPushing: false, explicitlyChosen: true)
+      }
+      // 生產端的遞交路徑；詞組觀察掛在這裡。
+      _ = handler.committableDisplayText()
+    }
+
     handler.clear()
     typeSyllables(benchCase.precedingReadings, measured: true)
     guard typeSyllables(benchCase.readings, measured: true) else {

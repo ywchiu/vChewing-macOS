@@ -93,6 +93,38 @@ extension LXAssembly.LXFacade {
     smartPreferenceStore?.saveToDisk(url: fileURL)
   }
 
+  // MARK: - 詞組學習（Phase 5）
+
+  /// 將已學詞組寫回磁碟（無異動時為早退）。
+  public func saveSmartPhraseData(toURL fileURL: URL? = nil) {
+    smartPhraseStore?.saveToDisk(url: fileURL)
+  }
+
+  /// 自磁碟載入已學詞組。
+  public func loadSmartPhraseData(fromURL fileURL: URL? = nil) {
+    smartPhraseStore?.loadFromDisk(url: fileURL)
+  }
+
+  /// 清除全部已學詞組。
+  ///
+  /// 使用者詞庫不受影響——本表從來沒往那裡寫過東西。
+  public func clearSmartPhraseData() {
+    smartPhraseStore?.clearAll()
+  }
+
+  /// 忘掉指定的已學詞組。
+  public func forgetSmartPhrases(values: [String]) {
+    smartPhraseStore?.forget(values: Set(values.filter { !$0.isEmpty }))
+  }
+
+  /// 目前的詞組觀察清單，供設定介面呈現「你已經手動組過這些詞」。
+  public func smartPhraseSnapshot(
+    timestamp: Double = Date().timeIntervalSince1970
+  )
+    -> [(candidate: LXAssembly.SmartPhraseCandidate, isPromoted: Bool)] {
+    smartPhraseStore?.snapshot(timestamp: timestamp) ?? []
+  }
+
   /// 目前學到的內容快照，供設定介面與診斷使用。
   public func smartPreferenceSnapshot(
     timestamp: Double = Date().timeIntervalSince1970

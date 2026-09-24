@@ -15,6 +15,8 @@ public enum BenchCaseKind: String, Codable, Sendable {
   case correctionLearning
   /// App 切換：先在 `trainAppCategory` 下學習，再到 `appCategory` 下檢查**不得**被污染。
   case appSwitching
+  /// 詞組升格：重複「逐字手動組出同一個詞組並遞交」若干輪，最後檢查它是否成為候選。
+  case phrasePromotion
 }
 
 // MARK: - BenchAppCategory
@@ -150,6 +152,7 @@ public enum BenchDatasetLoader {
     "cases_regression",
     "cases_smart",
     "cases_heldout",
+    "cases_phrases",
     "cases_correction",
     "cases_appswitch",
   ]
