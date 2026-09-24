@@ -93,6 +93,15 @@ public enum UserDef: String, CaseIterable, Identifiable, Sendable {
   case kPersonalLearningV2Enabled = "PersonalLearningV2Enabled"
   case kAppAwareLearningEnabled = "AppAwareLearningEnabled"
   case kTinyRerankerEnabled = "TinyRerankerEnabled"
+  // MARK: 學習階段打字日誌（Phase 7）。
+  //
+  // 這一對與上面四個開關**無關**，刻意不掛在 `kSmartContextEnabled` 底下：它錄的是
+  // 使用者打的每一個字，是全案中唯一會留下原文的東西，其開與關必須是一個獨立、
+  // 顯眼、使用者自己按下去的決定，而不是被另一個開關順便帶開的副作用。
+  //
+  // 兩者是 AND 的關係：開關為真、**且**允許清單非空，才會真的開始錄。
+  case kTypingJournalEnabled = "TypingJournalEnabled"
+  case kTypingJournalAllowedAppCategories = "TypingJournalAllowedAppCategories"
   case kUseFixedCandidateOrderOnSelection = "UseFixedCandidateOrderOnSelection"
   case kAutoCorrectReadingCombination = "AutoCorrectReadingCombination"
   case kReadingNarrationCoverage = "ReadingNarrationCoverage"
@@ -701,6 +710,9 @@ extension UserDef {
     case .kPersonalLearningV2Enabled: return .bool(false)
     case .kAppAwareLearningEnabled: return .bool(false)
     case .kTinyRerankerEnabled: return .bool(false)
+    // 錄製預設關閉，且允許清單預設為空——就算有人把開關打開，沒勾任何類別仍然什麼都不錄。
+    case .kTypingJournalEnabled: return .bool(false)
+    case .kTypingJournalAllowedAppCategories: return .arrayOfStrings([])
     case .kUseFixedCandidateOrderOnSelection: return .bool(false)
     case .kAutoCorrectReadingCombination: return .bool(true)
     case .kReadingNarrationCoverage: return .integer(0)
@@ -1137,6 +1149,12 @@ extension UserDef {
         userDef: self, shortTitle: "i18n:UserDef.kTinyRerankerEnabled.shortTitle",
         description: "i18n:UserDef.kTinyRerankerEnabled.description"
       )
+    case .kTypingJournalEnabled: return .init(
+        userDef: self, shortTitle: "i18n:UserDef.kTypingJournalEnabled.shortTitle",
+        description: "i18n:UserDef.kTypingJournalEnabled.description"
+      )
+    // 允許清單不是一個勾選框，不走通用的偏好呈現路徑。
+    case .kTypingJournalAllowedAppCategories: return nil
     case .kReducePOMLifetimeToNoMoreThan12Hours: return .init(
         userDef: self, shortTitle: "i18n:UserDef.kReducePOMLifetimeToNoMoreThan12Hours.shortTitle",
         description: "i18n:UserDef.kReducePOMLifetimeToNoMoreThan12Hours.description"

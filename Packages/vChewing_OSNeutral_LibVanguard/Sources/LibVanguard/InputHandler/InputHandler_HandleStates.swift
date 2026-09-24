@@ -530,6 +530,9 @@ extension InputHandlerProtocol {
     // 不會走到這裡——正是「這串東西真的被送出去了」的那一刻，也就是唯一該拿來
     // 學習的時刻。函式本身仍然只回傳字串，觀察不影響其回傳值。
     observeSmartPhrases()
+    // 學習階段打字日誌的記錄點（Phase 7）。預設完全不作用——見
+    // `isTypingJournalEffective` 的三道關。
+    recordTypingJournalEntry()
     let handleAsCodePointInput = currentTypingMethod == .codePoint && !sansReading
     let handleAsRomanNumeralInput = currentTypingMethod == .romanNumerals && !sansReading
     var displayTextSegments: [String] = handleAsCodePointInput || handleAsRomanNumeralInput

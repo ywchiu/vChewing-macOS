@@ -119,6 +119,15 @@ extension LXMgr {
     smartContextDataURL(mode, stem: "smart-phrases")
   }
 
+  /// SmartContext 學習階段打字日誌（Phase 7）的資料路徑。
+  ///
+  /// 又是一個獨立檔案，而且是三者之中唯一存有**使用者打過的原文**的那一個。
+  /// 分開存最直接的好處是：「清除日誌」可以實作成把整個檔案刪掉，
+  /// 而不是在一份混合檔裡挑欄位清空——後者永遠會讓人懷疑是不是沒清乾淨。
+  public static func typingJournalDataURL(_ mode: Shared.InputMode) -> URL {
+    smartContextDataURL(mode, stem: "typing-journal")
+  }
+
   /// SmartContext 各資料檔的共用路徑組裝。
   private static func smartContextDataURL(_ mode: Shared.InputMode, stem: String) -> URL {
     let suffix: String = switch mode {

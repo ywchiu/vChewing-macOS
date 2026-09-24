@@ -147,6 +147,13 @@ extension SettingsPanesCocoa {
             prefUITab: .tabDictionary
           )
         }?.boxed()
+        // 學習階段打字日誌自成一節：它留的是原文，不該與上面那組排序開關同框。
+        NSStackView.buildSection(width: contentWidth) {
+          UserDef.kTypingJournalEnabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+        }?.boxed()
         NSStackView.buildSection(width: contentWidth) {
           NSStackView.build(.vertical) {
             NSStackView.build(.horizontal) {

@@ -125,6 +125,76 @@ extension LXAssembly.LXFacade {
     smartPhraseStore?.snapshot(timestamp: timestamp) ?? []
   }
 
+  // MARK: - 學習階段打字日誌（Phase 7）
+
+  /// 目前是否真的在錄製打字日誌。
+  public func isTypingJournalRecording(
+    timestamp: Double = Date().timeIntervalSince1970
+  )
+    -> Bool {
+    typingJournal?.isRecording(now: timestamp) ?? false
+  }
+
+  /// 開始錄製。
+  ///
+  /// - Parameter allowedAppCategories: 允許錄製的 app 粗類別。**傳空集合等同於不錄**，
+  ///   而這正是預設值——這個功能沒有「全部都錄」的捷徑，使用者必須逐類勾選。
+  public func activateTypingJournal(
+    allowedAppCategories: Set<LXAssembly.SmartAppCategory>,
+    timestamp: Double = Date().timeIntervalSince1970
+  ) {
+    typingJournal?.activate(allowedAppCategories: allowedAppCategories, now: timestamp)
+  }
+
+  /// 停止錄製。已錄的內容不會一併清掉。
+  public func deactivateTypingJournal() {
+    typingJournal?.deactivate()
+  }
+
+  /// 記錄一段上屏文字。不在錄製狀態時是個早退。
+  public func noteTypingJournalEntry(
+    readings: [String],
+    committed: String,
+    precedingContext: [String],
+    appCategory: LXAssembly.SmartAppCategory,
+    timestamp: Double = Date().timeIntervalSince1970
+  ) {
+    typingJournal?.record(
+      readings: readings,
+      committed: committed,
+      precedingContext: precedingContext,
+      appCategory: appCategory,
+      timestamp: timestamp
+    )
+  }
+
+  /// 清除全部打字日誌（記憶體與磁碟）。
+  public func clearTypingJournal() {
+    typingJournal?.clearAll()
+  }
+
+  /// 把打字日誌匯出成 JSONL 檔。
+  ///
+  /// 這是一個**使用者主動按下去**的動作，且本倉沒有任何一行程式會把這個檔案送到
+  /// 任何地方去——交給誰、交出去多少，全由使用者自己決定。
+  @discardableResult
+  public func exportTypingJournal(to url: URL) -> Bool {
+    typingJournal?.exportToFile(at: url) ?? false
+  }
+
+  /// 目前的日誌筆數，供設定介面呈現。
+  public var typingJournalCount: Int { typingJournal?.count ?? 0 }
+
+  /// 將打字日誌寫回磁碟（無異動時為早退）。
+  public func saveTypingJournal(toURL fileURL: URL? = nil) {
+    typingJournal?.saveToDisk(url: fileURL)
+  }
+
+  /// 自磁碟載入打字日誌。載入**不會**讓錄製自行恢復。
+  public func loadTypingJournal(fromURL fileURL: URL? = nil) {
+    typingJournal?.loadFromDisk(url: fileURL)
+  }
+
   /// 目前學到的內容快照，供設定介面與診斷使用。
   public func smartPreferenceSnapshot(
     timestamp: Double = Date().timeIntervalSince1970

@@ -168,6 +168,13 @@
           .disabled(!smartContextEnabled)
         }
 
+        // 學習階段打字日誌自成一節，刻意**不**掛在 SmartContext 總開關底下：
+        // 上面那一組改的是排序，這一個留的是使用者打過的原文，兩者的風險不同級，
+        // 不該由同一個開關代表、也不該擺在同一個方框裡順手被勾走。
+        Section {
+          UserDef.kTypingJournalEnabled.renderUI()
+        }
+
         Section {
           VStack(alignment: .leading) {
             LabeledContent("i18n:settings.importFromKimoTxt.label") {

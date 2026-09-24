@@ -325,6 +325,28 @@ extension InputHandlerProtocol {
     assembler.contextScoreAdjuster = table.isEmpty ? nil : table.asContextScoreAdjuster()
   }
 
+  /// 候選重排器是否生效。
+  public var isTinyRerankerEffective: Bool {
+    isSmartContextEffective && prefs.tinyRerankerEnabled
+  }
+
+  /// 把候選交給重排器（若有）。
+  ///
+  /// 本階段沒有任何重排器實作，故這裡實際上恆為早退。留著它是為了讓「接上模型」
+  /// 這件事將來只需要指派 `currentLM.candidateReranker`，而不必再回頭改動候選管線。
+  func applySmartCandidateReranker(
+    to candidates: [Homa.CandidatePair]
+  )
+    -> [Homa.CandidatePair] {
+    guard isTinyRerankerEffective else { return candidates }
+    guard let reranker = currentLM.candidateReranker else { return candidates }
+    return LXAssembly.rerankCandidates(
+      candidates,
+      context: makeSmartInputContext(),
+      using: reranker
+    )
+  }
+
   /// 「這筆 POM 建議該不該在當前 app 裡浮現」的判定閉包。
   ///
   /// 回傳 nil 代表不做 app 區隔（旗標未全開、或偏好表未掛載），此時 POM 建議通道的

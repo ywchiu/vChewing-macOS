@@ -253,6 +253,19 @@ extension LXAssembly {
     /// 不可逆的污染。理由詳見 `SmartPhraseStore` 的說明。
     public var smartPhraseStore: SmartPhraseStore?
 
+    /// 目前掛載的候選重排器（Phase 6）。
+    ///
+    /// `nil`（預設，且 `tiny_reranker_enabled` 預設關閉）即為「沒有重排器」。
+    /// 本階段**沒有任何實作**——只備好槽位與契約。
+    public var candidateReranker: (any CandidateReranker)?
+
+    /// 「學習階段」打字日誌（Phase 7）。
+    ///
+    /// `nil`（預設）即為「這個功能不存在」——沒有任何一行打字紀錄會被產生。
+    /// 就算宿主把它掛上了，它自己還有第二道關（`allowedAppCategories` 預設為空、
+    /// `activatedAt` 預設為 nil），兩關都得使用者明確打開才會真的開始錄。
+    public var typingJournal: TypingJournal?
+
     /// 當前前景 app 的粗類別，由宿主於語境變動時寫入。
     ///
     /// 只有一個用途：讓 POM 的注入端知道「現在人在哪一類 app 裡」，好攔下

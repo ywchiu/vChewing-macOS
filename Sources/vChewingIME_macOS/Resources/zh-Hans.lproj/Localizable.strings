@@ -182,6 +182,10 @@
 "i18n:Menu.ServiceMenuEditor" = "服务选单编辑器";
 "i18n:Menu.SponsorTheDevelopment" = "赞助开发者…";
 "i18n:Menu.SymbolEmojiInput" = "符号＆绘文字输入";
+"i18n:Menu.TypingJournal.Clear" = "清除打字日志";
+"i18n:Menu.TypingJournal.Export" = "汇出打字日志";
+"i18n:Menu.TypingJournal.Start" = "开始录制打字日志";
+"i18n:Menu.TypingJournal.Stop" = "停止录制打字日志";
 "i18n:Menu.UninstallVChewing" = "卸除唯音…";
 "i18n:Menu.UsePhraseReplacement" = "使用语汇置换";
 "i18n:Menu.vChewingSettings" = "唯音输入法偏好设定…";
@@ -575,6 +579,8 @@
 "i18n:UserDef.kTogglingAlphanumericalModeWithLShift.shortTitle" = "允许使用左侧的 Shift 键切换英数输入模式";
 "i18n:UserDef.kTogglingAlphanumericalModeWithRShift.shortTitle" = "允许使用右侧的 Shift 键切换英数输入模式";
 "i18n:UserDef.kTrimUnfinishedReadingsOnCommit.shortTitle" = "在递交时清理未完成拼写的读音或字根";
+"i18n:UserDef.kTypingJournalEnabled.description" = "可录下您某一段时间内打的内容，供您自行汇出交给任一 AI 产生对照修改表、再喂回唯音。录制绝不会自行开始：您得先在此处启用，再于想被记录的那类应用程式里自输入法选单按下开始——只有那一类应用程式会被录。录制于八小时后自动停止，在 macOS 安全输入状态下一律不录，不会存取网路，且随时可以清除。";
+"i18n:UserDef.kTypingJournalEnabled.shortTitle" = "启用选用式的打字日志";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.description" = "指定 Shift+字母键 的行为。";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.option.0" = "直接键入内文组字区";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.option.1" = "始终直接递交小写字母";

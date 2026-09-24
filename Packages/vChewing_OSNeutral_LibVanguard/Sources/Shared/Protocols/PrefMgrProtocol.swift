@@ -53,6 +53,10 @@ public protocol PrefMgrProtocol {
   var personalLearningV2Enabled: Bool { get set }
   var appAwareLearningEnabled: Bool { get set }
   var tinyRerankerEnabled: Bool { get set }
+  /// 學習階段打字日誌的總開關。與上述四者無關，必須由使用者自己打開。
+  var typingJournalEnabled: Bool { get set }
+  /// 允許錄製打字日誌的 app 粗類別（`SmartAppCategory` 的 rawValue）。空陣列即不錄。
+  var typingJournalAllowedAppCategories: [String] { get set }
   var reducePOMLifetimeToNoMoreThan12Hours: Bool { get set }
   var useFixedCandidateOrderOnSelection: Bool { get set }
   var autoCorrectReadingCombination: Bool { get set }

@@ -81,6 +81,8 @@ extension SessionHost {
     host.pomDataURL = { LXMgr.perceptionOverrideModelDataURL($0) }
     host.smartPreferenceDataURL = { LXMgr.smartPreferenceDataURL($0) }
     host.smartPhraseDataURL = { LXMgr.smartPhraseDataURL($0) }
+    host.typingJournalDataURL = { LXMgr.typingJournalDataURL($0) }
+    host.isSecureInputActive = { SecurityAgentHelper.isSecureInputActive }
     host.validateCandidateKeys = { prefs, keys in
       prefs.validate(candidateKeys: keys)
     }

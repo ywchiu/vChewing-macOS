@@ -167,6 +167,12 @@ public final class PrefMgr: PrefMgrProtocol, Sendable {
   @AppProperty(userDef: .kTinyRerankerEnabled)
   public var tinyRerankerEnabled: Bool
 
+  @AppProperty(userDef: .kTypingJournalEnabled)
+  public var typingJournalEnabled: Bool
+
+  @AppProperty(userDef: .kTypingJournalAllowedAppCategories)
+  public var typingJournalAllowedAppCategories: [String]
+
   @AppProperty(userDef: .kReducePOMLifetimeToNoMoreThan12Hours)
   public var reducePOMLifetimeToNoMoreThan12Hours: Bool
 

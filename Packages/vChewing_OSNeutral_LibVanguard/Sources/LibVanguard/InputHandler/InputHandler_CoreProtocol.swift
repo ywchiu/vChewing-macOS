@@ -782,6 +782,11 @@ extension InputHandlerProtocol {
       }
     }
 
+    // Phase 6：候選重排器的唯一呼叫點。預設沒有重排器，此時本呼叫是個早退。
+    // 契約（只重排不生成、只看 Top-N、逾時即放棄）一律由
+    // `LXAssembly.rerankCandidates` 強制執行，不仰賴實作者自律。
+    arrCandidates = applySmartCandidateReranker(to: arrCandidates)
+
     return arrCandidates.map { ($0.keyArray, $0.value) }
   }
 

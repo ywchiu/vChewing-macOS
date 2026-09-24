@@ -343,6 +343,93 @@ public final class LXMgr {
     mode.lexicon.resetSmartPreferenceData(for: appCategory)
   }
 
+  // MARK: - 學習階段打字日誌（Phase 7）
+
+  /// 目前是否正在錄製打字日誌。
+  public static func isTypingJournalRecording(_ mode: Shared.InputMode = .imeModeNULL) -> Bool {
+    mode.lexicon.isTypingJournalRecording()
+  }
+
+  /// 開始錄製打字日誌。
+  ///
+  /// ## 允許清單怎麼來
+  ///
+  /// 按下「開始」時，把**當下所在應用程式的粗類別**加進允許清單，然後才開錄。
+  /// 這個形狀是刻意選的，而不是做一份勾選表：
+  ///
+  /// - 勾選表要求使用者事先想像「我等一下會在哪些地方打字」，而人不會這樣想事情；
+  ///   想不清楚的結果多半是把全部都勾起來，那就等於沒有隔離。
+  /// - 「在你想被記錄的那個 app 裡按開始」則不需要想像任何事：**你人在哪裡，就錄哪裡。**
+  ///   要多錄一類，就在那一類的 app 裡再按一次；清單是累加的。
+  ///
+  /// - Parameter appCategory: 要加進允許清單的類別。傳 nil 代表沿用既有清單
+  ///   （清單為空時即什麼都不錄）。
+  public static func startTypingJournal(
+    _ mode: Shared.InputMode = .imeModeNULL,
+    including appCategory: LXAssembly.SmartAppCategory? = nil
+  ) {
+    var allowed = Set(
+      PrefMgr.shared.typingJournalAllowedAppCategories
+        .compactMap { LXAssembly.SmartAppCategory(rawValue: $0) }
+    )
+    if let appCategory { allowed.insert(appCategory) }
+    PrefMgr.shared.typingJournalAllowedAppCategories = allowed.map(\.rawValue).sorted()
+    mode.lexicon.activateTypingJournal(allowedAppCategories: allowed)
+  }
+
+  /// 停止錄製。
+  ///
+  /// 停止會**一併清空允許清單**：下一次開始時得重新指定要錄哪裡。已錄的內容則
+  /// 原封不動——「停止」與「清除」是兩件事，使用者可能只是想先停下來、稍後再匯出。
+  public static func stopTypingJournal(_ mode: Shared.InputMode = .imeModeNULL) {
+    PrefMgr.shared.typingJournalAllowedAppCategories = []
+    mode.lexicon.deactivateTypingJournal()
+    mode.lexicon.saveTypingJournal()
+  }
+
+  /// 清除打字日誌。
+  ///
+  /// 這是三種學習資料裡唯一存有原文的那一份，所以它有自己的清除入口——
+  /// 使用者可能想留著用字偏好、只把打過的原文抹掉。
+  public static func clearTypingJournal(_ mode: Shared.InputMode = .imeModeNULL) {
+    mode.lexicon.clearTypingJournal()
+  }
+
+  /// 把打字日誌匯出到指定位置。
+  @discardableResult
+  public static func exportTypingJournal(
+    to url: URL,
+    mode: Shared.InputMode = .imeModeNULL
+  )
+    -> Bool {
+    mode.lexicon.exportTypingJournal(to: url)
+  }
+
+  /// 匯出到使用者資料目錄，並回傳實際寫出的位置。
+  ///
+  /// 刻意**不**從輸入法的選單彈 `NSSavePanel`：輸入法是背景程序，要讓它彈出一個
+  /// 模態面板得先把自己搶到前景，那在打字途中是很唐突的一件事。寫到使用者資料目錄
+  /// 再用 Finder 選取它，使用者一樣能拿到檔案，而且不必先回答一個對話框。
+  public static func exportTypingJournalToDataFolder(
+    _ mode: Shared.InputMode = .imeModeNULL,
+    timestamp: Date = .init()
+  )
+    -> URL? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyyMMdd-HHmmss"
+    let suffix: String = switch mode {
+    case .imeModeCHS: "chs"
+    case .imeModeCHT: "cht"
+    case .imeModeNULL: "dummy"
+    }
+    let url = URL(fileURLWithPath: dataFolderPath(isDefaultFolder: true))
+      .deletingLastPathComponent()
+      .appendingPathComponent(
+        "vChewing_typing-journal-\(suffix)-\(formatter.string(from: timestamp)).jsonl"
+      )
+    return exportTypingJournal(to: url, mode: mode) ? url : nil
+  }
+
   /// 清理語言模型記憶體，防止記憶體洩漏
   public static func performMemoryCleanup() {
     Shared.InputMode.validCases.forEach { mode in
@@ -576,6 +663,8 @@ extension LXMgr {
               // 故對既有的存檔成本幾乎沒有增加。
               $0.saveSmartPreferenceData()
               $0.saveSmartPhraseData()
+              // 打字日誌同理。它在未啟用時連 store 都不存在，故此處恆為早退。
+              $0.saveTypingJournal()
             }
           }
         }

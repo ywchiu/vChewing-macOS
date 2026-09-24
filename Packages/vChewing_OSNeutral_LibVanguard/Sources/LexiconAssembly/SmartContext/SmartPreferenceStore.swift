@@ -4,6 +4,45 @@
 
 import Foundation
 
+// MARK: - LXAssembly.SmartPreferenceProvenance
+
+extension LXAssembly {
+  /// 一筆訊號的來源。
+  ///
+  /// 加進這一格的唯一理由是**可復原性**：使用者自己按出來的每一次選字都是他當下的意思
+  /// 表示，沒有「撤銷」的必要；但「匯入一份 AI 產生的對照修改表」是一個他按下去時
+  /// 還不知道結果會怎樣的動作，所以那一批必須能整批收回，而且收回時不能把他自己
+  /// 累積的紀錄一併刮掉。要做到後者，就得知道每一筆裡有多少是那份表加上去的。
+  public enum SmartPreferenceProvenance: Sendable, Hashable {
+    /// 使用者本人的選字／改字。
+    case manual
+    /// 來自某一次對照修改表匯入。
+    case importedSheet(UUID)
+  }
+
+  /// 某一次匯入在某一筆紀錄上留下的足跡。
+  ///
+  /// 存的是「這份表替這筆紀錄加了幾次什麼」，而非單純一個來源標記——因為同一筆紀錄
+  /// 完全可能同時被使用者本人與匯入表碰過，復原時只能扣掉屬於該表的那一部分。
+  public struct SmartPreferenceImportStamp: Codable, Sendable, Hashable {
+    // MARK: Lifecycle
+
+    public init(sheetID: UUID) { self.sheetID = sheetID }
+
+    // MARK: Public
+
+    public let sheetID: UUID
+    public var frequency: Int = 0
+    public var correctionCount: Int = 0
+    public var demotionCount: Int = 0
+
+    /// 這筆足跡是否已經空了（可以丟掉）。
+    public var isVacant: Bool {
+      frequency <= 0 && correctionCount <= 0 && demotionCount <= 0
+    }
+  }
+}
+
 // MARK: - LXAssembly.SmartPreferenceEntry
 
 extension LXAssembly {
@@ -30,6 +69,30 @@ extension LXAssembly {
       self.appCategory = appCategory
     }
 
+    /// 手寫的解碼器，用於容忍**缺欄位**的舊檔。
+    ///
+    /// Swift 合成的 `init(from:)` 對缺少的鍵一律擲出 `keyNotFound`，就算該屬性有預設值
+    /// 也一樣（已實測）。也就是說，只要往本結構加一個欄位，既有存檔就會整份解不開——
+    /// 而持久化層見到解不開的檔案會直接丟棄，使用者累積數週的用字偏好就這樣沒了。
+    /// 因此**除了識別用的那五格以外，一律以 `decodeIfPresent` 讀取**：往後再加欄位
+    /// 時照此辦理，`schemaVersion` 就不必為了單純的欄位增補而跳號。
+    public init(from decoder: any Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      self.reading = try container.decode(String.self, forKey: .reading)
+      self.candidate = try container.decode(String.self, forKey: .candidate)
+      self.previous = try container.decode(String.self, forKey: .previous)
+      self.anterior = try container.decode(String.self, forKey: .anterior)
+      self.appCategory = try container.decode(SmartAppCategory.self, forKey: .appCategory)
+      self.frequency = try container.decodeIfPresent(Int.self, forKey: .frequency) ?? 0
+      self.correctionCount = try container
+        .decodeIfPresent(Int.self, forKey: .correctionCount) ?? 0
+      self.demotionCount = try container.decodeIfPresent(Int.self, forKey: .demotionCount) ?? 0
+      self.lastUsed = try container.decodeIfPresent(Double.self, forKey: .lastUsed) ?? 0
+      self.firstSeen = try container.decodeIfPresent(Double.self, forKey: .firstSeen) ?? 0
+      self.imports = try container
+        .decodeIfPresent([SmartPreferenceImportStamp].self, forKey: .imports) ?? []
+    }
+
     // MARK: Public
 
     /// 該候選的讀音索引鍵（以組字器分隔符連接）。供清除與診斷使用。
@@ -53,6 +116,13 @@ extension LXAssembly {
     public var lastUsed: Double = 0
     /// 最早被記錄的時間。僅供診斷。
     public var firstSeen: Double = 0
+    /// 各次匯入在本筆紀錄上留下的足跡。使用者自己打出來的紀錄恆為空陣列。
+    ///
+    /// 上限為 `SmartPreferenceStore.importStampCapacity`；滿了會丟掉最舊的一枚，
+    /// 也就是**那一次匯入在這一筆上就不再可復原**。這是刻意的取捨：與其讓一筆紀錄
+    /// 無上限地長，不如讓很久以前的某次匯入在某一筆上變得無法精確回退——反正
+    /// 那時的貢獻早已被後續的衰減與新訊號稀釋掉了。
+    public var imports: [SmartPreferenceImportStamp] = []
 
     // MARK: - Derived
 
@@ -135,6 +205,8 @@ extension LXAssembly {
     public static let totalCapacity = 2_000
     /// 每個 app 粗類別的筆數上限。
     public static let perAppCapacity = 256
+    /// 單筆紀錄可記住的匯入足跡數上限。
+    public static let importStampCapacity = 8
 
     /// 存檔位置。
     public var dataURL: URL?
@@ -147,6 +219,8 @@ extension LXAssembly {
     /// - Parameters:
     ///   - displaced: 這次選字換掉的是哪個詞（沒換掉任何東西時為 nil）。
     ///     非 nil 即構成一次「修正」，正負訊號一併寫入。
+    ///   - provenance: 訊號來源。非 `.manual` 者會額外留下可供整批復原的足跡；
+    ///     **除此之外走的路徑與使用者親手改字完全相同**，一樣受同一組上下限把守。
     public func note(
       reading: String,
       candidate: String,
@@ -154,9 +228,14 @@ extension LXAssembly {
       anterior: String,
       appCategory: SmartAppCategory,
       displaced: String?,
-      timestamp: Double
+      timestamp: Double,
+      provenance: SmartPreferenceProvenance = .manual
     ) {
       guard !candidate.isEmpty else { return }
+      let sheetID: UUID? = {
+        guard case let .importedSheet(id) = provenance else { return nil }
+        return id
+      }()
       lock.withLock {
         let isCorrection = displaced.map { !$0.isEmpty && $0 != candidate } ?? false
         upsert(
@@ -167,6 +246,12 @@ extension LXAssembly {
           entry.anterior = anterior
           entry.frequency += 1
           if isCorrection { entry.correctionCount += 1 }
+          if let sheetID {
+            Self.stampImport(on: &entry, sheetID: sheetID) { stamp in
+              stamp.frequency += 1
+              if isCorrection { stamp.correctionCount += 1 }
+            }
+          }
         }
         // 負向訊號：被換掉的那個詞，在**同一個語境下**稍微往後排。
         // 刻意不做成全域性的——使用者在「一家」後面不要「函式」，不代表他在
@@ -177,10 +262,46 @@ extension LXAssembly {
             timestamp: timestamp
           ) { entry in
             entry.demotionCount += 1
+            if let sheetID {
+              Self.stampImport(on: &entry, sheetID: sheetID) { stamp in
+                stamp.demotionCount += 1
+              }
+            }
           }
         }
         evictIfNeeded()
         isDirty = true
+      }
+    }
+
+    /// 整批復原某一次對照修改表匯入。
+    ///
+    /// **扣掉的只有那份表加上去的那一部分**：使用者自己在同一筆紀錄上累積的次數原封
+    /// 不動，只有在扣完之後整筆歸零時才會真的把紀錄刪掉。匯入是使用者按下去、
+    /// 但按下去時並不知道結果的動作，所以它必須收得回來；而收回不該連帶懲罰他
+    /// 自己打出來的東西。
+    ///
+    /// - Returns: 實際被更動（含被刪除）的紀錄筆數。
+    @discardableResult
+    public func forgetEntries(fromSheet sheetID: UUID) -> Int {
+      lock.withLock {
+        var affected = 0
+        for (key, var entry) in entries {
+          guard let index = entry.imports.firstIndex(where: { $0.sheetID == sheetID })
+          else { continue }
+          let stamp = entry.imports.remove(at: index)
+          entry.frequency = Swift.max(0, entry.frequency - stamp.frequency)
+          entry.correctionCount = Swift.max(0, entry.correctionCount - stamp.correctionCount)
+          entry.demotionCount = Swift.max(0, entry.demotionCount - stamp.demotionCount)
+          affected += 1
+          if entry.frequency == 0, entry.correctionCount == 0, entry.demotionCount == 0 {
+            remove(key)
+          } else {
+            entries[key] = entry
+          }
+        }
+        if affected > 0 { isDirty = true }
+        return affected
       }
     }
 
@@ -362,6 +483,24 @@ extension LXAssembly {
     // MARK: Private
 
     private let lock = NSLock()
+
+    /// 在紀錄上累加某次匯入的足跡；滿了就丟掉最舊的一枚。
+    private static func stampImport(
+      on entry: inout SmartPreferenceEntry,
+      sheetID: UUID,
+      _ mutate: (inout SmartPreferenceImportStamp) -> ()
+    ) {
+      if let index = entry.imports.firstIndex(where: { $0.sheetID == sheetID }) {
+        mutate(&entry.imports[index])
+        return
+      }
+      var stamp = SmartPreferenceImportStamp(sheetID: sheetID)
+      mutate(&stamp)
+      entry.imports.append(stamp)
+      if entry.imports.count > importStampCapacity {
+        entry.imports.removeFirst(entry.imports.count - importStampCapacity)
+      }
+    }
 
     private func upsert(key: Key, timestamp: Double, _ mutate: (inout SmartPreferenceEntry) -> ()) {
       var entry = entries[key] ?? .init(

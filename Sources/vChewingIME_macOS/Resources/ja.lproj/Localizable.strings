@@ -182,6 +182,10 @@
 "i18n:Menu.ServiceMenuEditor" = "サービスメニューエディター";
 "i18n:Menu.SponsorTheDevelopment" = "開発者にお寄り付けを…";
 "i18n:Menu.SymbolEmojiInput" = "符号＆絵文字入力";
+"i18n:Menu.TypingJournal.Clear" = "入力ジャーナルを消去";
+"i18n:Menu.TypingJournal.Export" = "入力ジャーナルを書き出す";
+"i18n:Menu.TypingJournal.Start" = "入力ジャーナルの記録を開始";
+"i18n:Menu.TypingJournal.Stop" = "入力ジャーナルの記録を停止";
 "i18n:Menu.UninstallVChewing" = "入力アプリを卸除く…";
 "i18n:Menu.UsePhraseReplacement" = "言葉置換機能";
 "i18n:Menu.vChewingSettings" = "唯音入力機能設定…";
@@ -575,6 +579,8 @@
 "i18n:UserDef.kTogglingAlphanumericalModeWithLShift.shortTitle" = "左側の Shift キーで英数入力モードの切り替え";
 "i18n:UserDef.kTogglingAlphanumericalModeWithRShift.shortTitle" = "右側の Shift キーで英数入力モードの切り替え";
 "i18n:UserDef.kTrimUnfinishedReadingsOnCommit.shortTitle" = "送り出す緩衝列内容から未完成な音読み/筆組みを除く";
+"i18n:UserDef.kTypingJournalEnabled.description" = "一定期間に入力した内容を記録し、書き出したファイルをお好みの AI に渡して対照修正表を作らせ、それを威注音に読み込ませることができます。記録が勝手に始まることはありません。ここで有効にしたうえで、記録したい種類のアプリの中で入力メニューから開始する必要があります。記録されるのはその種類のアプリだけです。8 時間で自動的に停止し、macOS のセキュア入力中は一切記録せず、ネットワークにも接続せず、いつでも消去できます。";
+"i18n:UserDef.kTypingJournalEnabled.shortTitle" = "任意参加の入力ジャーナルを有効化";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.description" = "Shift+文字キーの行為をご指定ください。";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.option.0" = "入力緩衝列にローマ字入力";
 "i18n:UserDef.kUpperCaseLetterKeyBehavior.option.1" = "いつでもローマ字（小文字）を直接出力";

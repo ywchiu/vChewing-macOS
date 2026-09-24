@@ -480,6 +480,41 @@ extension IMEMenuSputnik {
         )
         .alternated()
         .nulled(!PrefMgr.shared.smartContextEnabled)
+      // 學習階段打字日誌（Phase 7）。整組只在使用者自己打開該偏好時才出現——
+      // 這是全案唯一會留下原文的功能，沒開啟時連入口都不該在選單裡晃。
+      NSMenu.Item(
+        verbatim: LXMgr.isTypingJournalRecording(IMEApp.currentInputMode)
+          ? "i18n:Menu.TypingJournal.Stop".i18n
+          : "i18n:Menu.TypingJournal.Start".i18n
+      )?
+        .act(
+          register {
+            if LXMgr.isTypingJournalRecording(IMEApp.currentInputMode) {
+              LXMgr.stopTypingJournal(IMEApp.currentInputMode)
+            } else {
+              // 錄「你人在的這一類 app」：允許清單自當下的客體推得，
+              // 使用者不必事先在設定裡想像自己等一下會在哪裡打字。
+              LXMgr.startTypingJournal(
+                IMEApp.currentInputMode,
+                including: .categorize(bundleID: self.core?.clientBundleIdentifier)
+              )
+            }
+          }
+        )
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
+      NSMenu.Item("i18n:Menu.TypingJournal.Export")?
+        .act(
+          register {
+            guard let url = LXMgr.exportTypingJournalToDataFolder(IMEApp.currentInputMode)
+            else { return }
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+          }
+        )
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
+      NSMenu.Item("i18n:Menu.TypingJournal.Clear")?
+        .act(register { LXMgr.clearTypingJournal(IMEApp.currentInputMode) })
+        .alternated()
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
 
       NSMenu.Item.separator() // ---------------------
       NSMenu.Item("i18n:Menu.CheckForUpdates")?
