@@ -159,6 +159,7 @@
 "i18n:Menu.CheckForUpdates" = "更新通知を受く…";
 "i18n:Menu.ChineseInputMode" = "漢語入力モード";
 "i18n:Menu.ClearMemorizedPhrases" = "臨時記憶資料を削除";
+"i18n:Menu.ClearSmartContextLearningData" = "文脈学習データを削除";
 "i18n:Menu.CodePointInput" = "コードポイント入力。";
 "i18n:Menu.CopyAllToClipboard" = "全てをクリップボードにコピー";
 "i18n:Menu.Edit" = "編集…";
@@ -175,6 +176,7 @@
 "i18n:Menu.PushCursorAfterSelection" = "候補選択の直後、すぐカーソルを単語の向こうに推し進める";
 "i18n:Menu.RebootVChewing" = "入力アプリ再起動…";
 "i18n:Menu.ReloadUserPhrases" = "ユーザー辞書を再び読込む";
+"i18n:Menu.ResetSmartContextLearningDataForThisApp" = "この種のアプリの文脈学習をリセット";
 "i18n:Menu.SearchPreferences" = "設定を検索…";
 "i18n:Menu.ServiceMenu" = "サービスメニュー";
 "i18n:Menu.ServiceMenuEditor" = "サービスメニューエディター";

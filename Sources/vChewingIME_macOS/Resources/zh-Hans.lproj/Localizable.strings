@@ -159,6 +159,7 @@
 "i18n:Menu.CheckForUpdates" = "检查是否有新版…";
 "i18n:Menu.ChineseInputMode" = "中文输入模式";
 "i18n:Menu.ClearMemorizedPhrases" = "清除临时记忆语汇资料";
+"i18n:Menu.ClearSmartContextLearningData" = "清除上下文感知学习资料";
 "i18n:Menu.CodePointInput" = "内码输入模式。";
 "i18n:Menu.CopyAllToClipboard" = "全部拷贝到剪贴簿";
 "i18n:Menu.Edit" = "编辑…";
@@ -175,6 +176,7 @@
 "i18n:Menu.PushCursorAfterSelection" = "在选字后将游标置于该字词的前方";
 "i18n:Menu.RebootVChewing" = "重新启动输入法…";
 "i18n:Menu.ReloadUserPhrases" = "重载自订语汇";
+"i18n:Menu.ResetSmartContextLearningDataForThisApp" = "重设本类应用程式的上下文学习资料";
 "i18n:Menu.SearchPreferences" = "搜寻偏好设定…";
 "i18n:Menu.ServiceMenu" = "服务菜单";
 "i18n:Menu.ServiceMenuEditor" = "服务选单编辑器";

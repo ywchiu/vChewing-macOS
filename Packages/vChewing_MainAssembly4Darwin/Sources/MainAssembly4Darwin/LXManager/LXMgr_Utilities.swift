@@ -104,6 +104,35 @@ extension LXMgr {
     ).deletingLastPathComponent().appendingPathComponent(fileName)
   }
 
+  /// SmartContext 個人用字偏好（Personal Learning v2）的資料路徑。
+  ///
+  /// 與 POM 分開存放，而非併進同一個檔案：兩者的生命週期與清除時機都不同
+  /// （POM 八天、本表三十天），混在一起會讓「只想清掉其中一種」這種要求做不到。
+  /// 副檔名用 `.json` 而非 POM 的 `.dat`，是為了讓使用者看得出它是可讀的、
+  /// 而且真的只存在於本機。
+  public static func smartPreferenceDataURL(_ mode: Shared.InputMode) -> URL {
+    smartContextDataURL(mode, stem: "smart-preferences")
+  }
+
+  /// SmartContext 已學詞組（Phase 5）的資料路徑。
+  public static func smartPhraseDataURL(_ mode: Shared.InputMode) -> URL {
+    smartContextDataURL(mode, stem: "smart-phrases")
+  }
+
+  /// SmartContext 各資料檔的共用路徑組裝。
+  private static func smartContextDataURL(_ mode: Shared.InputMode, stem: String) -> URL {
+    let suffix: String = switch mode {
+    case .imeModeCHS: "chs"
+    case .imeModeCHT: "cht"
+    case .imeModeNULL: "dummy"
+    }
+    return URL(
+      fileURLWithPath: dataFolderPath(isDefaultFolder: true)
+    )
+    .deletingLastPathComponent()
+    .appendingPathComponent("vChewing_\(stem)-\(suffix).json")
+  }
+
   // MARK: - 使用者片語檔案專用目錄的合規性檢查
 
   /// 判斷「指定的使用者資料目錄」是否實質等同於「未指定」。

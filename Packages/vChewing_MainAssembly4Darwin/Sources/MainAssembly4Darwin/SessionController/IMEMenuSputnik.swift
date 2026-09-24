@@ -451,6 +451,35 @@ extension IMEMenuSputnik {
           }
         )
         .alternated()
+      // SmartContext 的學習資料與 POM 分開清除：兩者是不同的記憶，
+      // 使用者可能只想清掉其中一種。本項於 SmartContext 總開關關閉時隱藏——
+      // 功能沒開啟時，選單裡擺一個清除它的項目只會讓人困惑。
+      NSMenu.Item("i18n:Menu.ClearSmartContextLearningData")?
+        .act(
+          register {
+            LXMgr.clearSmartContextLearningData(IMEApp.currentInputMode)
+            LXMgr.clearSmartContextLearningData(IMEApp.currentInputMode.reversed)
+          }
+        )
+        .nulled(!PrefMgr.shared.smartContextEnabled)
+      // Option 鍵的替身項：只清掉「當前這一類應用程式」的用字偏好。
+      // 需求書要求分別提供「清除全部」與「重設單一 app 的學習」兩個入口；
+      // 做成替身項而非另一列，是因為本選單已經以這個形狀配對過同類動作
+      // （最佳化／清除臨時記憶就是一對），多開一列只會讓選單更長。
+      NSMenu.Item("i18n:Menu.ResetSmartContextLearningDataForThisApp")?
+        .act(
+          register {
+            let category = LXAssembly.SmartAppCategory.categorize(
+              bundleID: self.core?.clientBundleIdentifier
+            )
+            LXMgr.resetSmartContextLearningData(for: category, mode: IMEApp.currentInputMode)
+            LXMgr.resetSmartContextLearningData(
+              for: category, mode: IMEApp.currentInputMode.reversed
+            )
+          }
+        )
+        .alternated()
+        .nulled(!PrefMgr.shared.smartContextEnabled)
 
       NSMenu.Item.separator() // ---------------------
       NSMenu.Item("i18n:Menu.CheckForUpdates")?

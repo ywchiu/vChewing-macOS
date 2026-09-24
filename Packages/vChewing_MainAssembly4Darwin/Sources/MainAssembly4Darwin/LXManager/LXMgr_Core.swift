@@ -326,6 +326,23 @@ public final class LXMgr {
     mode.lexicon.clearPOMData()
   }
 
+  /// 清除 SmartContext 的全部學習資料（個人用字偏好 ＋ 已學詞組）。
+  ///
+  /// 與 POM 的清除分開提供：兩者是不同的記憶，使用者可能只想清掉其中一種。
+  /// 本函式**不會**動到使用者詞庫——SmartContext 從來沒往那裡寫過東西。
+  public static func clearSmartContextLearningData(_ mode: Shared.InputMode = .imeModeNULL) {
+    mode.lexicon.clearSmartPreferenceData()
+    mode.lexicon.clearSmartPhraseData()
+  }
+
+  /// 只清除某個 app 粗類別底下的用字偏好。
+  public static func resetSmartContextLearningData(
+    for appCategory: LXAssembly.SmartAppCategory,
+    mode: Shared.InputMode = .imeModeNULL
+  ) {
+    mode.lexicon.resetSmartPreferenceData(for: appCategory)
+  }
+
   /// 清理語言模型記憶體，防止記憶體洩漏
   public static func performMemoryCleanup() {
     Shared.InputMode.validCases.forEach { mode in
@@ -554,6 +571,11 @@ extension LXMgr {
           asyncOnMain {
             targetLexicons.forEach {
               $0.savePOMData()
+              // SmartContext 的兩份學習資料搭同一班車：同樣的 debounce 節奏、
+              // 同樣的 `suppressUserDataMonitor` 保護範圍。兩者各自在無異動時早退，
+              // 故對既有的存檔成本幾乎沒有增加。
+              $0.saveSmartPreferenceData()
+              $0.saveSmartPhraseData()
             }
           }
         }

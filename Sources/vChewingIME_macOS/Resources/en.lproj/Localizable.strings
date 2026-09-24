@@ -159,6 +159,7 @@
 "i18n:Menu.CheckForUpdates" = "Check for Updates…";
 "i18n:Menu.ChineseInputMode" = "Chinese Input Mode";
 "i18n:Menu.ClearMemorizedPhrases" = "Clear Memorized Phrases";
+"i18n:Menu.ClearSmartContextLearningData" = "Clear Context-Aware Learning Data";
 "i18n:Menu.CodePointInput" = "Code Point Input.";
 "i18n:Menu.CopyAllToClipboard" = "Copy All to Clipboard";
 "i18n:Menu.Edit" = "Edit…";
@@ -175,6 +176,7 @@
 "i18n:Menu.PushCursorAfterSelection" = "Push the cursor in front of the phrase after selection";
 "i18n:Menu.RebootVChewing" = "Reboot vChewing…";
 "i18n:Menu.ReloadUserPhrases" = "Reload User Phrases";
+"i18n:Menu.ResetSmartContextLearningDataForThisApp" = "Reset Context-Aware Learning for This Kind of App";
 "i18n:Menu.SearchPreferences" = "Search Preferences…";
 "i18n:Menu.ServiceMenu" = "Service Menu";
 "i18n:Menu.ServiceMenuEditor" = "Service Menu Editor";

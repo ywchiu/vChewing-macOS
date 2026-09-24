@@ -79,6 +79,8 @@ extension SessionHost {
     host.prefs = { PrefMgr.shared }
     // Lexicon 動作依賴。
     host.pomDataURL = { LXMgr.perceptionOverrideModelDataURL($0) }
+    host.smartPreferenceDataURL = { LXMgr.smartPreferenceDataURL($0) }
+    host.smartPhraseDataURL = { LXMgr.smartPhraseDataURL($0) }
     host.validateCandidateKeys = { prefs, keys in
       prefs.validate(candidateKeys: keys)
     }
