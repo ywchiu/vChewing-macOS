@@ -120,6 +120,12 @@ public final class SessionHost {
 
   /// 取得指定模式下的感知模型（POM）資料路徑。
   public var pomDataURL: (Shared.InputMode) -> URL? = { _ in nil }
+  /// 取得指定模式下的個人用字偏好（SmartContext Personal Learning v2）資料路徑。
+  ///
+  /// 與 `pomDataURL` 是**兩個不同的檔案**：POM 的格式不動、本表另存一份，
+  /// 這樣任一邊壞掉或被清除都不會波及另一邊。未注入時為 nil，此時偏好只存在於
+  /// 記憶體、隨行程結束而消失。
+  public var smartPreferenceDataURL: (Shared.InputMode) -> URL? = { _ in nil }
   /// 候選字鍵驗證。
   public var validateCandidateKeys: (_ prefs: any PrefMgrProtocol, _ keys: String) -> String? =
     { _, _ in nil }

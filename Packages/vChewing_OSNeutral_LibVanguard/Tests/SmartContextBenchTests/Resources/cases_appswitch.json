@@ -5,8 +5,8 @@
     {
       "id": "app-hanshi-chat-to-editor",
       "kind": "appSwitching",
-      "precedingText": "正宗",
-      "precedingReadings": ["ㄓㄥˋ", "ㄗㄨㄥ"],
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
       "readings": ["ㄏㄢˊ", "ㄕˋ"],
       "expected": "函式",
       "trainExpected": "韓式",
@@ -19,8 +19,8 @@
     {
       "id": "app-ceshi-chat-to-editor",
       "kind": "appSwitching",
-      "precedingText": "一位",
-      "precedingReadings": ["ㄧˊ", "ㄨㄟˋ"],
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
       "readings": ["ㄘㄜˋ", "ㄕˋ"],
       "expected": "測試",
       "trainExpected": "策士",
@@ -31,10 +31,10 @@
       "tags": ["app-switch", "contamination-guard"]
     },
     {
-      "id": "app-chengshi-chat-to-editor",
+      "id": "app-chengshi-editor-to-chat",
       "kind": "appSwitching",
-      "precedingText": "執行",
-      "precedingReadings": ["ㄓˊ", "ㄒㄧㄥˊ"],
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
       "readings": ["ㄔㄥˊ", "ㄕˋ"],
       "expected": "城市",
       "trainExpected": "程式",
@@ -47,8 +47,8 @@
     {
       "id": "app-guanxi-chat-to-mail",
       "kind": "appSwitching",
-      "precedingText": "日本",
-      "precedingReadings": ["ㄖˋ", "ㄅㄣˇ"],
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
       "readings": ["ㄍㄨㄢ", "ㄒㄧ"],
       "expected": "關係",
       "trainExpected": "關西",

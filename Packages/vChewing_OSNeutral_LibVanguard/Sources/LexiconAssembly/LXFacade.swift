@@ -239,6 +239,20 @@ extension LXAssembly {
     /// `LXFacade` 本身不讀偏好、也不自行建立 scorer。
     public var smartContextScorer: (any SmartContextScorer)?
 
+    /// 個人用字偏好儲存體（Personal Learning v2）。
+    ///
+    /// 與 `lxPerceptor`（POM）**並存而非取代**：POM 的檔案格式、餵入組句的路徑、
+    /// 既有行為全部不動，本表補的是 POM 結構上表達不了的負向訊號與 app 維度。
+    /// 同樣由宿主依偏好設定決定掛不掛。
+    public var smartPreferenceStore: SmartPreferenceStore?
+
+    /// 當前前景 app 的粗類別，由宿主於語境變動時寫入。
+    ///
+    /// 只有一個用途：讓 POM 的注入端知道「現在人在哪一類 app 裡」，好攔下
+    /// 那些只在別類 app 學過的記憶（見 `smartPreferenceStore` 的
+    /// `wasLearnedOnlyElsewhere`）。`nil` 即「不做 app 區分」，也是預設值。
+    public var currentAppCategory: SmartAppCategory?
+
     // 在函式內部用以記錄狀態的開關。
     public private(set) var config = Config()
 
@@ -846,6 +860,10 @@ extension LXAssembly {
       hasher.combine(Self.factoryGeneration)
       hasher.combine(Self.pomGeneration)
       hasher.combine(gramSupplyHub.generation)
+      // App 粗類別必須進指紋：POM 的注入結果自此**取決於當前在哪一類 app**
+      // （見下方的 `appPartition`）。不放進來的話，切換 app 之後會直接命中舊快取、
+      // 拿回上一個 app 算出來的那份元圖陣列，那道攔截等於沒做。
+      hasher.combine(currentAppCategory)
       let fingerprint = hasher.finalize()
       if fingerprint != unigramCacheFingerprint {
         unigramLRUCache.removeAll(keepingCapacity: true)
@@ -1056,10 +1074,18 @@ extension LXAssembly {
       // 原始候選清單（fetchCandidates 僅排除 contextual grams）；unigram 記憶改由
       // LibVanguard 建議通道浮現（受 fetch／「固定順序」等把守）。
       if config.fetchSuggestionsFromPerceptionOverrideModel {
+        let pomTimestamp = Date().timeIntervalSince1970
+        // App 區隔（僅在宿主同時啟用 app-aware 與 personal-learning-v2 時生效）：
+        // POM 的記憶鍵沒有 app 這一格，故「在聊天室裡教會的詞」到了編輯器裡照樣會被
+        // 餵進組句。而 POM 餵的是 contextual gram（權重 −0.115～0），對上 unigram
+        // 基線的 −5 上下有五個數量級的優勢，SmartContext 的 ±1.5 加權**結構上壓不回去**
+        // ——只能在注入端攔。判準收得很窄，見 `wasLearnedOnlyElsewhere` 的說明。
+        let appPartition = makePOMAppPartition(timestamp: pomTimestamp)
         let pomGrams = lxPerceptor.perceptionsFor(
-          headReading: keyChain, timestamp: Date().timeIntervalSince1970
+          headReading: keyChain, timestamp: pomTimestamp
         ).compactMap { pom -> Homa.Gram? in
           guard pom.previous != nil || pom.anterior != nil else { return nil }
+          if let appPartition, appPartition(pom.candidate, pom.previous) { return nil }
           return Homa.Gram(
             keyArray: pom.headReading.split(separator: "-").map(String.init),
             current: pom.candidate,
@@ -1242,6 +1268,10 @@ extension LXAssembly {
       hasher.combine(Self.factoryGeneration)
       hasher.combine(Self.pomGeneration)
       hasher.combine(gramSupplyHub.generation)
+      // App 粗類別必須進指紋：POM 的注入結果自此**取決於當前在哪一類 app**
+      // （見下方的 `appPartition`）。不放進來的話，切換 app 之後會直接命中舊快取、
+      // 拿回上一個 app 算出來的那份元圖陣列，那道攔截等於沒做。
+      hasher.combine(currentAppCategory)
       let fingerprint = hasher.finalize()
       if fingerprint != unigramCacheFingerprint {
         unigramLRUCache.removeAll(keepingCapacity: true)
@@ -1447,12 +1477,16 @@ extension LXAssembly {
       // 故 POM head 比對**顯式**以 `.toneInsensitivePrefix`（去聲調等值）進行——桶查詢本就不能
       // 釘定聲調；fast path 的單鍵具體讀音（含第一聲）則維持 `.exact` 逐字等值。
       if config.fetchSuggestionsFromPerceptionOverrideModel {
+        let pomTimestamp = Date().timeIntervalSince1970
+        // 與 fast path 同一道 app 區隔；理由見該處註解。
+        let appPartition = makePOMAppPartition(timestamp: pomTimestamp)
         let pomGrams = lxPerceptor.perceptionsFor(
           headReading: keyChain,
-          timestamp: Date().timeIntervalSince1970,
+          timestamp: pomTimestamp,
           matchMode: .toneInsensitivePrefix
         ).compactMap { pom -> Homa.Gram? in
           guard pom.previous != nil || pom.anterior != nil else { return nil }
+          if let appPartition, appPartition(pom.candidate, pom.previous) { return nil }
           return Homa.Gram(
             keyArray: pom.headReading.split(separator: "-").map(String.init),
             current: pom.candidate,

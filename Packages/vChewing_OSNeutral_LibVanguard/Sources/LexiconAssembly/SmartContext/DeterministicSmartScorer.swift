@@ -92,13 +92,22 @@ extension LXAssembly {
   public final class DeterministicSmartScorer: SmartContextScorer {
     // MARK: Lifecycle
 
-    public init(weights: SmartScoringWeights = .default) {
+    public init(
+      weights: SmartScoringWeights = .default,
+      preferenceStore: SmartPreferenceStore? = nil
+    ) {
       self.weights = weights
+      self.preferenceStore = preferenceStore
     }
 
     // MARK: Public
 
     public let weights: SmartScoringWeights
+    /// 個人用字偏好（Personal Learning v2）。
+    ///
+    /// `nil`（或 `personal_learning_v2_enabled` 關閉時由宿主不掛載）即代表這一類訊號
+    /// 不存在，其餘訊號照常運作。
+    public let preferenceStore: SmartPreferenceStore?
 
     public func scoreAdjustment(
       candidate: String,
@@ -121,6 +130,7 @@ extension LXAssembly {
       applyRecency(context: context, into: &entries)
       applySessionVocabulary(context: context, into: &entries)
       applyCorrections(context: context, into: &entries)
+      applyPersonalPreferences(context: context, into: &entries)
 
       return .init(entries: entries)
     }
@@ -207,7 +217,29 @@ extension LXAssembly {
       }
     }
 
-    /// 修正訊號。Phase 3 之前兩個權重都是 0，本函式因此是個早退。
+    /// 個人用字偏好（跨 session）。
+    ///
+    /// 這一類訊號**蓋過**其餘各類：領域詞表是我猜的，而這是使用者自己教的。
+    /// 兩者衝突時，聽使用者的。
+    private func applyPersonalPreferences(
+      context: SmartInputContext,
+      into entries: inout [String: Double]
+    ) {
+      guard let store = preferenceStore else { return }
+      let learned = store.adjustments(
+        previous: context.precedingValues.first ?? "",
+        appCategory: context.appCategory,
+        timestamp: Date().timeIntervalSince1970
+      )
+      guard !learned.isEmpty else { return }
+      for (candidate, value) in learned {
+        // 取代而非疊加：疊加會讓「領域詞表也剛好收了這個詞」的候選平白多拿一份，
+        // 而那份加權的來源其實是同一個判斷。
+        entries[candidate] = value
+      }
+    }
+
+    /// Session-local 修正訊號。Phase 3 之前兩個權重都是 0，本函式因此是個早退。
     private func applyCorrections(
       context: SmartInputContext,
       into entries: inout [String: Double]

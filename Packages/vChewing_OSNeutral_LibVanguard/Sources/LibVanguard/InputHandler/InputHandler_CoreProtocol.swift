@@ -324,10 +324,18 @@ extension InputHandlerProtocol {
     if explicitlyChosen, isSmartContextEffective {
       let displacedValue = preservedSentenceBeforeConsolidation
         .findGram(at: preservedCursorPosition)?.gram.value
-      smartContextConfig.noteSelection(theCandidate.value)
+      smartContextConfig.noteSelection(theCandidate.value, appCategory: currentAppCategory)
       if let displacedValue, displacedValue != theCandidate.value {
         smartContextConfig.noteCorrection(from: displacedValue, to: theCandidate.value)
       }
+      // 跨 session 的那一份（Personal Learning v2）。語境取「游標之前的已定詞」，
+      // 與 `makeSmartInputContext()` 取的是同一組，否則寫進去的鍵與日後查詢的鍵對不上。
+      recordSmartPreference(
+        for: theCandidate,
+        displacing: displacedValue,
+        within: preservedSentenceBeforeConsolidation,
+        at: preservedCursorPosition
+      )
     }
 
     /// 必須先鞏固當前組字器游標上下文、以消滅意料之外的影響，但在內文組字區內就地輪替候選字詞時除外。
@@ -854,7 +862,13 @@ extension InputHandlerProtocol {
       }
     }
 
+    // App 區隔：POM 有**兩條**通路會把記憶送到使用者面前——`LXFacade.unigramsFor`
+    // 的元圖注入（影響組句），以及本建議通道（把候選置頂到選字窗）。兩條都得攔，
+    // 只攔一條的話會出現「句子對了、但選字窗第一個還是別的 app 教的那個詞」。
+    let appPartition = smartPOMAppPartition()
+
     return suggestion.candidates.compactMap { candidate in
+      if let appPartition, appPartition(candidate.value, candidate.previous) { return nil }
       let keyString = candidate.keyArray.joined(separator: separator)
       let suggestedUnigram = Homa.Gram(
         keyArray: candidate.keyArray,

@@ -133,10 +133,18 @@ public final class BenchDriver {
     handler.clear()
     handler.clearSmartContextState()
     lx.clearPOMData()
+    // 跨 session 的那一份也要清：它掛在 `LXFacade` 上、壽命比單一案例長得多，
+    // 不清的話前一筆案例學到的東西會滲進下一筆，量到的就不是各案例自己的行為了。
+    lx.clearSmartPreferenceData()
   }
 
   /// 僅供診斷測試取用內部 handler。
   public var handlerForDiag: InputHandler { handler }
+
+  /// 僅供診斷測試：敲入一串音節。
+  public func typeForDiag(_ syllables: [String]) {
+    typeSyllables(syllables, measured: false)
+  }
 
   // MARK: Internal
 
