@@ -48,6 +48,7 @@ public protocol InputHandlerProtocol: AnyObject {
   var calligrapher: String { get set } // 磁帶專用組筆區
   var mixedAlnumConfig: MixedAlnumConfig { get set } // 中英混打模式之執行期狀態
   var furiousConfig: FuriousTypingConfig { get set } // 狂拼模式之執行期狀態
+  var smartContextConfig: SmartContextRuntimeConfig { get set } // SmartContext 之執行期狀態
   var composer: Tekkon.Composer { get set } // 注拼槽
   var assembler: Homa.Assembler { get set } // 組字器
 }
@@ -243,6 +244,11 @@ extension InputHandlerProtocol {
     currentTypingMethod = .vChewingFactory
     backupCursor = nil
     furiousConfig.resetAll() // 狀態重置：狂拼之整批執行期狀態（trail＋當拍狀態）一併失效。
+    // 組字器已清空，任何以舊組字區為前提編出來的加權表都已失效。
+    // session-local 的選字／修正記錄刻意**不**在此清除——它們的時間尺度是「這一段輸入」，
+    // 而 `clear()` 每遞交一次就會被呼叫一次。整批清除走 `clearSmartContextState()`。
+    smartContextConfig.invalidate()
+    assembler.contextScoreAdjuster = nil
   }
 
   /// 解除中英混打之「閂滯於英打」狀態。
@@ -312,6 +318,17 @@ extension InputHandlerProtocol {
     let theCandidate: Homa.CandidatePair = .init(candidate)
     let preservedSentenceBeforeConsolidation = assembler.assembledSentence
     let preservedCursorPosition = actualNodeCursorPosition
+    // SmartContext 的 session-local 訊號：只採計**使用者顯式選字**。
+    // Enter 固化高亮候選、POM 自動套用等「非使用者本人決定」的路徑一律不記——
+    // 那些是系統自己的猜測，拿它們回頭餵自己只會讓偏差自我強化。
+    if explicitlyChosen, isSmartContextEffective {
+      let displacedValue = preservedSentenceBeforeConsolidation
+        .findGram(at: preservedCursorPosition)?.gram.value
+      smartContextConfig.noteSelection(theCandidate.value)
+      if let displacedValue, displacedValue != theCandidate.value {
+        smartContextConfig.noteCorrection(from: displacedValue, to: theCandidate.value)
+      }
+    }
 
     /// 必須先鞏固當前組字器游標上下文、以消滅意料之外的影響，但在內文組字區內就地輪替候選字詞時除外。
     if preConsolidate { consolidateCursorContext(with: theCandidate) }

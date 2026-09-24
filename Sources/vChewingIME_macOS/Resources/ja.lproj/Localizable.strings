@@ -361,6 +361,8 @@
 "i18n:UserDef.kAlwaysShowTooltipTextsHorizontally.shortTitle" = "ヒントを常に横書きにする";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.description" = "ほとんどの「Electron で構築したアプリ」は IMKTextInput API の実作についての支障があり、その実作した API の挙動は予測できなくて、バグ退治もとても困難だと考えられています。このようなアプリの開発者たちにもそれぞれの原因でこのような支障を解決する策も動力も極めて少ないと認識されております。故に、このスイッチの最初値はONにしました。";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.shortTitle" = "Electron で構築した全ての客体アプリに「吹き出し入力緩衝列ウィンドウ」を強制的に起用";
+"i18n:UserDef.kAppAwareLearningEnabled.description" = "有効にすると、アプリの大分類（エディタ・ターミナル・メール・チャット・ブラウザ）ごとに小さな個別の傾向を保持し、コーディング中の語彙がメール作成時に紛れ込まないようにします。記録されるのは分類のみで、個々のアプリを特定する情報は残りません。分類ごとの補正は意図的に小さく、全体の傾向を覆すことはできません。";
+"i18n:UserDef.kAppAwareLearningEnabled.shortTitle" = "アプリの種別ごとに語彙の傾向を分ける";
 "i18n:UserDef.kAppleLanguages.description" = "アプリ表示用言語をご指定下さい、そして入力アプリは自動的に再起動。";
 "i18n:UserDef.kAppleLanguages.shortTitle" = "表示用言語:";
 "i18n:UserDef.kAutoCompositeWithLongestPossibleCassetteKey.shortTitle" = "最長可能キーができた場合、文字を組み立つ";
@@ -463,6 +465,8 @@
 "i18n:UserDef.kNumPadCharInputBehavior.option.4" = "入力緩衝列がからっぽの時、半角で直接出力";
 "i18n:UserDef.kNumPadCharInputBehavior.option.5" = "入力緩衝列がからっぽの時、全角で直接出力";
 "i18n:UserDef.kNumPadCharInputBehavior.shortTitle" = "テンキー:";
+"i18n:UserDef.kPersonalLearningV2Enabled.description" = "有効にすると、どの語をどの文脈で何回選んだか、どの語を置き換えたかを拡張的に記録します。繰り返し直した語は速やかに優先され、一度きり退けた語はわずかに下がるだけで時間とともに回復するため、一度の特殊な選択が通常の入力を恒久的に歪めることはありません。記録はすべてこの Mac 内に留まり、いつでも消去できます。";
+"i18n:UserDef.kPersonalLearningV2Enabled.shortTitle" = "選んだ語と直した語から学習する";
 "i18n:UserDef.kPhraseEditorAutoReloadExternalModifications.shortTitle" = "このエディターの外部からの編集結果をこのエディターに自動的に読み込む";
 "i18n:UserDef.kPhraseReplacementEnabled.description" = "指定された候補そのものを置き換える";
 "i18n:UserDef.kPhraseReplacementEnabled.shortTitle" = "言葉置換表を起用";
@@ -517,6 +521,8 @@
 "i18n:UserDef.kShowReverseLookupInCandidateUI.shortTitle" = "候補陳列ウィンドウで可能な逆引参照結果を示す";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.description" = "これをチェックしないと、全ての筆画は ASCII キーネームで入力緩衝列で表示してしまうことになる。CIN ファイルの「%keyname」というところで筆画の定義はできる。";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.shortTitle" = "原始キーネームでなく、筆画を入力緩衝列で表示する";
+"i18n:UserDef.kSmartContextEnabled.description" = "有効にすると、前後の語を踏まえて候補の順序と組句結果を調整します。調整は加算式かつ上限付きで、同音候補の並び替えはできても、手動で選んだ結果を覆すことはなく、語を勝手に作り出すこともありません。オフにすると元の並び順に完全に戻ります。これは親スイッチであり、オフの間は以下の三項目は機能しません。";
+"i18n:UserDef.kSmartContextEnabled.shortTitle" = "文脈を考慮した候補の並べ替えを有効化";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.description" = "スペースキーで入力候補を呼び出すか、空白を挿入するか、候補を順送りするかを指定します。\n「候補を順送り」を選択している場合、Shift+Space で逆方向に順送りします。";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.0" = "空白を挿入";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.1" = "候補陳列ウィンドウを呼び出す";
@@ -562,6 +568,8 @@
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.description" = "このスイッチをオンにすると、音調キーで後ろ側の漢字の音調を書き直した時にツールチップが表示されなくなります。入力中にツールチップが邪魔だと感じる場合は、この設定を有効にしてください。";
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.shortTitle" = "後ろ側の漢字の音調を書き直した時のツールチップを表示しない";
 "i18n:UserDef.kSymbolInputEnabled.shortTitle" = "僅かなる絵文字も含む符号入力サポートを起用";
+"i18n:UserDef.kTinyRerankerEnabled.description" = "将来のオンデバイス再順位付けモデル用に予約された項目です。現時点ではモデルが同梱されていないため、このスイッチは何も行いません。モデルが利用可能になった場合も、既に算出済みの上位候補を並べ替えるだけで、独自に文章を生成することも、ネットワークに接続することも、入力を待たせることもありません。";
+"i18n:UserDef.kTinyRerankerEnabled.shortTitle" = "試験的な候補リランカーを有効化";
 "i18n:UserDef.kTogglingAlphanumericalModeWithLShift.shortTitle" = "左側の Shift キーで英数入力モードの切り替え";
 "i18n:UserDef.kTogglingAlphanumericalModeWithRShift.shortTitle" = "右側の Shift キーで英数入力モードの切り替え";
 "i18n:UserDef.kTrimUnfinishedReadingsOnCommit.shortTitle" = "送り出す緩衝列内容から未完成な音読み/筆組みを除く";

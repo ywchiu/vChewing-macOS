@@ -361,6 +361,8 @@
 "i18n:UserDef.kAlwaysShowTooltipTextsHorizontally.shortTitle" = "Always show tooltip texts horizontally";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.description" = "Electron-based apps are notorious in unpredictable (buggy) IMKTextInput API interactive behaviors. Most of such apps are unlikely to have their individual issues of such solved correctly on-time due to various out-of-control reasons, hence why this toggle is enabled by default.";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.shortTitle" = "Always use popup composition buffer for Electron-based client apps";
+"i18n:UserDef.kAppAwareLearningEnabled.description" = "When enabled, vChewing keeps a small, separate preference for each broad category of app (editor, terminal, mail, chat, browser), so the words you use while coding do not leak into the words you use while writing mail. Only the category is recorded, never the identity of individual apps. The per-category adjustment is deliberately small and can never override your global preferences.";
+"i18n:UserDef.kAppAwareLearningEnabled.shortTitle" = "Let vocabulary preferences differ between kinds of apps";
 "i18n:UserDef.kAppleLanguages.description" = "Change user interface language (will reboot the IME).";
 "i18n:UserDef.kAppleLanguages.shortTitle" = "UI Language:";
 "i18n:UserDef.kAutoCompositeWithLongestPossibleCassetteKey.shortTitle" = "Auto-composite when the longest possible key is formed";
@@ -463,6 +465,8 @@
 "i18n:UserDef.kNumPadCharInputBehavior.option.4" = "Directly commit half-width chars only if the compositor is empty";
 "i18n:UserDef.kNumPadCharInputBehavior.option.5" = "Directly commit full-width chars only if the compositor is empty";
 "i18n:UserDef.kNumPadCharInputBehavior.shortTitle" = "Numeric Pad:";
+"i18n:UserDef.kPersonalLearningV2Enabled.description" = "When enabled, vChewing keeps an extended record of your choices: how often a word was picked, in what context, and which word it replaced. A word you correct repeatedly rises quickly; a word you rejected once is only lightly demoted and recovers over time, so a single unusual pick cannot permanently distort ordinary typing. All records stay on this Mac and can be erased at any time.";
+"i18n:UserDef.kPersonalLearningV2Enabled.shortTitle" = "Learn from the words you pick and the ones you correct";
 "i18n:UserDef.kPhraseEditorAutoReloadExternalModifications.shortTitle" = "This editor only: Auto-reload modifications happened outside of this editor";
 "i18n:UserDef.kPhraseReplacementEnabled.description" = "This will batch-replace specified candidates.";
 "i18n:UserDef.kPhraseReplacementEnabled.shortTitle" = "Enable phrase replacement table";
@@ -517,6 +521,8 @@
 "i18n:UserDef.kShowReverseLookupInCandidateUI.shortTitle" = "Show available reverse-lookup results in candidate window";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.description" = "All strokes in the composition buffer will be shown as ASCII keyboard characters unless this option is enabled. Stroke is definable in the “%keyname” section of the CIN file.";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.shortTitle" = "Show translated strokes in composition buffer";
+"i18n:UserDef.kSmartContextEnabled.description" = "When enabled, vChewing takes the surrounding words into account when ranking candidates and assembling sentences. The adjustment is additive and bounded: it can reorder same-sounding candidates, but it never overrides a choice you made by hand, and it never invents words. Turn this off to restore the original ranking behaviour exactly. This is the master switch — the three options below have no effect while it is off.";
+"i18n:UserDef.kSmartContextEnabled.shortTitle" = "Enable context-aware candidate ranking";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.description" = "Determines whether the Space key opens the candidate window, inserts a space, or revolves candidates.\nWhen \"Revolve candidates\" is selected, Shift+Space will revolve candidates in the reverse direction.";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.0" = "Insert space";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.1" = "Call candidate window";
@@ -562,6 +568,8 @@
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.description" = "By turning this toggle ON, the IME will no longer show the tooltip when an intonation key overrides the tone of the previous reading in the compositor. Some people may want to turn this on to avoid disruptive experiences while typing.";
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.shortTitle" = "Suppress the tooltip when overriding the previous reading's tone";
 "i18n:UserDef.kSymbolInputEnabled.shortTitle" = "Enable symbol input support (incl. certain emoji symbols)";
+"i18n:UserDef.kTinyRerankerEnabled.description" = "Reserved for a future on-device reranking model. Nothing is installed yet, so this switch currently does nothing. When a model is available it will only reorder the top few candidates that vChewing already produced; it will never generate text of its own, never access the network, and never block typing.";
+"i18n:UserDef.kTinyRerankerEnabled.shortTitle" = "Enable the experimental candidate reranker";
 "i18n:UserDef.kTogglingAlphanumericalModeWithLShift.shortTitle" = "Toggle alphanumerical mode with Left-Shift";
 "i18n:UserDef.kTogglingAlphanumericalModeWithRShift.shortTitle" = "Toggle alphanumerical mode with Right-Shift";
 "i18n:UserDef.kTrimUnfinishedReadingsOnCommit.shortTitle" = "Trim unfinished readings / strokes on commit";

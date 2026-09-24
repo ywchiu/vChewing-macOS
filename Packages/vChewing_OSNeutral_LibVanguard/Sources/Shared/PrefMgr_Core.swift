@@ -155,6 +155,18 @@ public final class PrefMgr: PrefMgrProtocol, Sendable {
   @AppProperty(userDef: .kFetchSuggestionsFromPerceptionOverrideModel)
   public var fetchSuggestionsFromPerceptionOverrideModel: Bool
 
+  @AppProperty(userDef: .kSmartContextEnabled)
+  public var smartContextEnabled: Bool
+
+  @AppProperty(userDef: .kPersonalLearningV2Enabled)
+  public var personalLearningV2Enabled: Bool
+
+  @AppProperty(userDef: .kAppAwareLearningEnabled)
+  public var appAwareLearningEnabled: Bool
+
+  @AppProperty(userDef: .kTinyRerankerEnabled)
+  public var tinyRerankerEnabled: Bool
+
   @AppProperty(userDef: .kReducePOMLifetimeToNoMoreThan12Hours)
   public var reducePOMLifetimeToNoMoreThan12Hours: Bool
 

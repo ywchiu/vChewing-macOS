@@ -232,6 +232,13 @@ extension LXAssembly {
     // 簡體中文模型？
     public let isCHS: Bool
 
+    /// 目前掛載的 SmartContext 計分器。
+    ///
+    /// `nil`（預設）即為「SmartContext 不存在」：`LibVanguard` 見到 nil 就會把組字器上的
+    /// 加權鉤子拆掉，組句行為回到引入本機制之前。掛載與否由宿主依偏好設定決定，
+    /// `LXFacade` 本身不讀偏好、也不自行建立 scorer。
+    public var smartContextScorer: (any SmartContextScorer)?
+
     // 在函式內部用以記錄狀態的開關。
     public private(set) var config = Config()
 

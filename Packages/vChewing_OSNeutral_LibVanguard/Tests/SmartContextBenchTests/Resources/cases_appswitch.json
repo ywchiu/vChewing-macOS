@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "name": "app-switching",
+  "cases": [
+    {
+      "id": "app-hanshi-chat-to-editor",
+      "kind": "appSwitching",
+      "precedingText": "正宗",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄨㄥ"],
+      "readings": ["ㄏㄢˊ", "ㄕˋ"],
+      "expected": "函式",
+      "trainExpected": "韓式",
+      "trainAppCategory": "chat",
+      "appCategory": "editor",
+      "competitors": ["韓式"],
+      "repeatCount": 3,
+      "tags": ["app-switch", "contamination-guard"]
+    },
+    {
+      "id": "app-ceshi-chat-to-editor",
+      "kind": "appSwitching",
+      "precedingText": "一位",
+      "precedingReadings": ["ㄧˊ", "ㄨㄟˋ"],
+      "readings": ["ㄘㄜˋ", "ㄕˋ"],
+      "expected": "測試",
+      "trainExpected": "策士",
+      "trainAppCategory": "chat",
+      "appCategory": "editor",
+      "competitors": ["策士"],
+      "repeatCount": 3,
+      "tags": ["app-switch", "contamination-guard"]
+    },
+    {
+      "id": "app-chengshi-chat-to-editor",
+      "kind": "appSwitching",
+      "precedingText": "執行",
+      "precedingReadings": ["ㄓˊ", "ㄒㄧㄥˊ"],
+      "readings": ["ㄔㄥˊ", "ㄕˋ"],
+      "expected": "城市",
+      "trainExpected": "程式",
+      "trainAppCategory": "editor",
+      "appCategory": "chat",
+      "competitors": ["程式"],
+      "repeatCount": 3,
+      "tags": ["app-switch", "contamination-guard"]
+    },
+    {
+      "id": "app-guanxi-chat-to-mail",
+      "kind": "appSwitching",
+      "precedingText": "日本",
+      "precedingReadings": ["ㄖˋ", "ㄅㄣˇ"],
+      "readings": ["ㄍㄨㄢ", "ㄒㄧ"],
+      "expected": "關係",
+      "trainExpected": "關西",
+      "trainAppCategory": "chat",
+      "appCategory": "mail",
+      "competitors": ["關西"],
+      "repeatCount": 3,
+      "tags": ["app-switch", "contamination-guard"]
+    }
+  ]
+}

@@ -48,6 +48,11 @@ public protocol PrefMgrProtocol {
   var allowRescoringSingleKanjiCandidates: Bool { get set }
   var enforceETenDOSCandidateSequence: Bool { get set }
   var fetchSuggestionsFromPerceptionOverrideModel: Bool { get set }
+  /// SmartContext 的總閘。為 false 時，下述三個子開關一律不生效。
+  var smartContextEnabled: Bool { get set }
+  var personalLearningV2Enabled: Bool { get set }
+  var appAwareLearningEnabled: Bool { get set }
+  var tinyRerankerEnabled: Bool { get set }
   var reducePOMLifetimeToNoMoreThan12Hours: Bool { get set }
   var useFixedCandidateOrderOnSelection: Bool { get set }
   var autoCorrectReadingCombination: Bool { get set }

@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "name": "smart-context",
+  "cases": [
+    {
+      "id": "smart-chengshi-code",
+      "precedingText": "執行",
+      "precedingReadings": ["ㄓˊ", "ㄒㄧㄥˊ"],
+      "readings": ["ㄔㄥˊ", "ㄕˋ"],
+      "expected": "程式",
+      "competitors": ["城市", "成事", "乘勢"],
+      "appCategory": "editor",
+      "tags": ["tech", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-chengshi-travel",
+      "precedingText": "整座",
+      "precedingReadings": ["ㄓㄥˇ", "ㄗㄨㄛˋ"],
+      "readings": ["ㄔㄥˊ", "ㄕˋ"],
+      "expected": "城市",
+      "competitors": ["程式"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-hanshi-code",
+      "precedingText": "呼叫",
+      "precedingReadings": ["ㄏㄨ", "ㄐㄧㄠˋ"],
+      "readings": ["ㄏㄢˊ", "ㄕˋ"],
+      "expected": "函式",
+      "competitors": ["韓式", "寒士", "韓氏"],
+      "appCategory": "editor",
+      "tags": ["tech", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-hanshi-food",
+      "precedingText": "正宗",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄨㄥ"],
+      "readings": ["ㄏㄢˊ", "ㄕˋ"],
+      "expected": "韓式",
+      "competitors": ["函式", "寒士", "韓氏"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-ceshi-unit",
+      "precedingText": "單元",
+      "precedingReadings": ["ㄉㄢ", "ㄩㄢˊ"],
+      "readings": ["ㄘㄜˋ", "ㄕˋ"],
+      "expected": "測試",
+      "competitors": ["策士", "側室", "側視"],
+      "appCategory": "editor",
+      "tags": ["tech", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-bushu-deploy",
+      "precedingText": "要",
+      "precedingReadings": ["ㄧㄠˋ"],
+      "readings": ["ㄅㄨˋ", "ㄕㄨˇ"],
+      "expected": "部署",
+      "competitors": ["部屬", "不數", "不屬"],
+      "appCategory": "terminal",
+      "tags": ["tech", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-bushu-subordinate",
+      "precedingText": "他的",
+      "precedingReadings": ["ㄊㄚ", "ㄉㄜ˙"],
+      "readings": ["ㄅㄨˋ", "ㄕㄨˇ"],
+      "expected": "部屬",
+      "competitors": ["部署"],
+      "appCategory": "mail",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-huichu-export",
+      "precedingText": "資料",
+      "precedingReadings": ["ㄗ", "ㄌㄧㄠˋ"],
+      "readings": ["ㄏㄨㄟˋ", "ㄔㄨ"],
+      "expected": "匯出",
+      "competitors": ["會出", "繪出"],
+      "appCategory": "editor",
+      "tags": ["tech", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-citiao-dictionary",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄘˊ", "ㄊㄧㄠˊ"],
+      "expected": "詞條",
+      "competitors": ["磁條", "辭條"],
+      "appCategory": "editor",
+      "tags": ["general", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-citiao-magnetic",
+      "precedingText": "這張卡的",
+      "precedingReadings": ["ㄓㄜˋ", "ㄓㄤ", "ㄎㄚˇ", "ㄉㄜ˙"],
+      "readings": ["ㄘˊ", "ㄊㄧㄠˊ"],
+      "expected": "磁條",
+      "competitors": ["詞條", "辭條"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-shishi-fact",
+      "precedingText": "陳述",
+      "precedingReadings": ["ㄔㄣˊ", "ㄕㄨˋ"],
+      "readings": ["ㄕˋ", "ㄕˊ"],
+      "expected": "事實",
+      "competitors": ["適時", "嗜食"],
+      "appCategory": "mail",
+      "tags": ["general", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-shishi-timely",
+      "precedingText": "請",
+      "precedingReadings": ["ㄑㄧㄥˇ"],
+      "readings": ["ㄕˋ", "ㄕˊ"],
+      "expected": "適時",
+      "competitors": ["事實", "嗜食"],
+      "appCategory": "mail",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-guanxi-relation",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄍㄨㄢ", "ㄒㄧ"],
+      "expected": "關係",
+      "competitors": ["關西", "矜惜"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-guanxi-kansai",
+      "precedingText": "日本",
+      "precedingReadings": ["ㄖˋ", "ㄅㄣˇ"],
+      "readings": ["ㄍㄨㄢ", "ㄒㄧ"],
+      "expected": "關西",
+      "competitors": ["關係", "矜惜"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-honghai-company",
+      "precedingText": "投資",
+      "precedingReadings": ["ㄊㄡˊ", "ㄗ"],
+      "readings": ["ㄏㄨㄥˊ", "ㄏㄞˇ"],
+      "expected": "鴻海",
+      "competitors": ["紅海"],
+      "appCategory": "mail",
+      "tags": ["company", "homophone", "context-hold"]
+    },
+    {
+      "id": "smart-honghai-sea",
+      "precedingText": "橫渡",
+      "precedingReadings": ["ㄏㄥˊ", "ㄉㄨˋ"],
+      "readings": ["ㄏㄨㄥˊ", "ㄏㄞˇ"],
+      "expected": "紅海",
+      "competitors": ["鴻海"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-shiyi-poetic",
+      "precedingText": "充滿",
+      "precedingReadings": ["ㄔㄨㄥ", "ㄇㄢˇ"],
+      "readings": ["ㄕ", "ㄧˋ"],
+      "expected": "詩意",
+      "competitors": ["失憶", "失意"],
+      "appCategory": "chat",
+      "tags": ["general", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-fujian-mail",
+      "precedingText": "附上",
+      "precedingReadings": ["ㄈㄨˋ", "ㄕㄤˋ"],
+      "readings": ["ㄈㄨˋ", "ㄐㄧㄢˋ"],
+      "expected": "附件",
+      "competitors": ["復健", "復建"],
+      "appCategory": "mail",
+      "tags": ["mail", "homophone", "context-flip"]
+    },
+    {
+      "id": "smart-canshu-parameter",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄘㄢ", "ㄕㄨˋ"],
+      "expected": "參數",
+      "appCategory": "editor",
+      "tags": ["tech", "context-hold"]
+    },
+    {
+      "id": "smart-proper-wangdaming",
+      "precedingText": "我是",
+      "precedingReadings": ["ㄨㄛˇ", "ㄕˋ"],
+      "readings": ["ㄨㄤˊ", "ㄉㄚˋ", "ㄇㄧㄥˊ"],
+      "expected": "王大明",
+      "competitors": ["王大名"],
+      "appCategory": "chat",
+      "tags": ["name", "proper-noun", "phrase-promotion"]
+    }
+  ]
+}

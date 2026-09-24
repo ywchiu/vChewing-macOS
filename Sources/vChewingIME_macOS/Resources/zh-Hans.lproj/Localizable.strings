@@ -361,6 +361,8 @@
 "i18n:UserDef.kAlwaysShowTooltipTextsHorizontally.shortTitle" = "始终使用横排来显示工具提示视窗";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.description" = "基于 Electron 技术构建的客体往往臭名昭彰于各自的对 IMKTextInput API 的「行为难以预测、难以保证」的实作上。更糟糕的是，这类 App 的开发者们均有着各自的不可控的原因、而难以保证他们的 App 的这种问题能被及时地、妥当地解决。这也是为什么这个开关在预设情况下处于开启状态。";
 "i18n:UserDef.kAlwaysUsePCBWithElectronBasedClients.shortTitle" = "对基于 Electron 技术构建的客体软体一律强制启用浮动组字窗";
+"i18n:UserDef.kAppAwareLearningEnabled.description" = "启用后，唯音会依应用程式的粗类别（编辑器、终端机、邮件、即时通讯、浏览器）各自保留一份轻量偏好，使您写程式时的用词不致渗入写信时的用词。仅纪录类别，不纪录任何足以辨识个别应用程式的资讯。各类别的加权刻意设得很小，不可能推翻您的整体偏好。";
+"i18n:UserDef.kAppAwareLearningEnabled.shortTitle" = "让不同类型的应用程式各有用词偏好";
 "i18n:UserDef.kAppleLanguages.description" = "变更输入法介面语言，会自动重启输入法。";
 "i18n:UserDef.kAppleLanguages.shortTitle" = "介面语言:";
 "i18n:UserDef.kAutoCompositeWithLongestPossibleCassetteKey.shortTitle" = "在已经敲出最长可能码的时候自动组字";
@@ -463,6 +465,8 @@
 "i18n:UserDef.kNumPadCharInputBehavior.option.4" = "直接递交半形文字，除非组字区不为空";
 "i18n:UserDef.kNumPadCharInputBehavior.option.5" = "直接递交全形文字，除非组字区不为空";
 "i18n:UserDef.kNumPadCharInputBehavior.shortTitle" = "数字小键盘:";
+"i18n:UserDef.kPersonalLearningV2Enabled.description" = "启用后，唯音会为您的选字保留较完整的纪录：某个词在什么前后文下被选过几次、又取代了哪个词。反覆改正的词会迅速上升；被您退掉一次的词只会被轻微压低且随时间回复，故单次的特殊选字不会永久污染日常输入。所有纪录仅留存于本机，且可随时清除。";
+"i18n:UserDef.kPersonalLearningV2Enabled.shortTitle" = "自您选过与改过的字词中学习";
 "i18n:UserDef.kPhraseEditorAutoReloadExternalModifications.shortTitle" = "仅限该编辑器：自动读入来自该编辑器外部的档案内容修改";
 "i18n:UserDef.kPhraseReplacementEnabled.description" = "这将会对指定的候选字词进行整词取代。";
 "i18n:UserDef.kPhraseReplacementEnabled.shortTitle" = "启用语汇置换表";
@@ -517,6 +521,8 @@
 "i18n:UserDef.kShowReverseLookupInCandidateUI.shortTitle" = "在选字窗内显示可用的字根反查结果";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.description" = "不启用该选项的话，在组字区内的字根将会以原始键盘按键名称来显示。所有关于字根的定义，均请洽 CIN 磁带档案内的「%keyname」章节。";
 "i18n:UserDef.kShowTranslatedStrokesInCompositionBuffer.shortTitle" = "在组字区内显示字根、而非原始键盘码";
+"i18n:UserDef.kSmartContextEnabled.description" = "启用后，唯音会把前后文一并纳入候选排序与组句的考量。该调整为加法且有上限：它能改变同音候选之间的顺序，但不会推翻您手动选过的字，也不会凭空生成词汇。关闭后即完全回复原本的排序行为。本项为总开关——关闭时，以下三项一律不生效。";
+"i18n:UserDef.kSmartContextEnabled.shortTitle" = "启用上下文感知的候选排序";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.description" = "指定空格键是呼出选字窗、插入空格、还是轮替候选字。\n选择「轮替候选字」时，Shift+Space 会反向轮替。";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.0" = "插入空格";
 "i18n:UserDef.kSpaceKeyBehaviorAgainstICB.option.1" = "呼出选字窗";
@@ -562,6 +568,8 @@
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.description" = "启用后，以声调键覆写游标身后的汉字的音调时，将不再显示内文提示。若您觉得该提示干扰工作心流，可考虑开启这个选项。";
 "i18n:UserDef.kSuppressTooltipForIntonationKeyOverrideEvents.shortTitle" = "停用「已覆写游标身后的汉字的音调」内文提示";
 "i18n:UserDef.kSymbolInputEnabled.shortTitle" = "启用包括少许绘文字在内的符号输入支援";
+"i18n:UserDef.kTinyRerankerEnabled.description" = "此项保留给日后的装置端重排模型。目前尚未内建任何模型，故本开关暂无作用。待模型就绪后，它也仅会重排唯音已经算出的前几个候选，不会自行生成文字、不会存取网路、也不会卡住输入。";
+"i18n:UserDef.kTinyRerankerEnabled.shortTitle" = "启用实验性的候选重排器";
 "i18n:UserDef.kTogglingAlphanumericalModeWithLShift.shortTitle" = "允许使用左侧的 Shift 键切换英数输入模式";
 "i18n:UserDef.kTogglingAlphanumericalModeWithRShift.shortTitle" = "允许使用右侧的 Shift 键切换英数输入模式";
 "i18n:UserDef.kTrimUnfinishedReadingsOnCommit.shortTitle" = "在递交时清理未完成拼写的读音或字根";

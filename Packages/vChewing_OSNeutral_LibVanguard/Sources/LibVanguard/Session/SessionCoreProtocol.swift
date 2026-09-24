@@ -30,6 +30,12 @@ public protocol SessionCoreProtocol: AnyObject & CtlCandidateDelegate {
   var isASCIIMode: Bool { get }
   var clientMitigationLevel: Int { get }
   var ui: SessionUIProtocol? { get }
+  /// 當前客體的 bundle identifier。
+  ///
+  /// 這裡是純字串、與任何 Darwin API 無關，故留在基底協議上不違反 OS-neutral 原則。
+  /// SmartContext 的 app-aware 加權唯一的資料來源即此——且它拿到之後立刻正規化成
+  /// `LXAssembly.SmartAppCategory` 粗類別，完整的 bundle ID 不會再往下傳。
+  var clientBundleIdentifier: String { get }
 
   // MARK: Handler
 

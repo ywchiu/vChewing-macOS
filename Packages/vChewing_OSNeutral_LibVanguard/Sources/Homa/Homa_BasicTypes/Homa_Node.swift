@@ -185,21 +185,78 @@ extension Homa.Node {
   public var value: String? { currentGram?.current }
 
   /// 給出目前的最高權重單元圖當中的權重值。該結果可能會受節點覆寫狀態所影響。
-  private var unigramScore: Double {
+  ///
+  /// - Parameter contextAdjuster: 上下文加權鉤子（可選）。為 nil 時行為與引入該機制前
+  ///   逐位元一致。語義與效能契約見 `Homa.ContextScoreAdjuster`。
+  private mutating func unigramScore(
+    contextAdjuster: Homa.ContextScoreAdjuster? = nil
+  )
+    -> Double {
     guard !grams.isEmpty else { return 0 }
     // 單次線性掃描、只取陣列順序上的第一個單元圖機率，不建立任何一次性 filter 陣列。
     var firstUnigramProbability: Double?
-    for gram in grams {
+    var firstUnigramIndex: Int?
+    for (index, gram) in grams.enumerated() {
       guard (gram.previous ?? "").isEmpty, (gram.anterior ?? "").isEmpty else { continue }
       firstUnigramProbability = gram.probability
+      firstUnigramIndex = index
       break
     }
     guard let firstUnigramProbability else { return 0 }
     switch currentOverrideType {
     case .withSpecified: return overridingScore
     case .withTopGramScore: return firstUnigramProbability
-    default: return currentGram?.probability ?? firstUnigramProbability
+    default:
+      guard let contextAdjuster, let firstUnigramIndex else {
+        return currentGram?.probability ?? firstUnigramProbability
+      }
+      // 句首（無前文）時同樣讓上下文加權參與單元圖的擇定——語境不只來自前一個詞，
+      // 也可能來自 app 類別或本 session 剛用過的詞。
+      let picked = Self.pickBestUnigram(
+        in: grams,
+        startingAt: firstUnigramIndex,
+        baseline: firstUnigramProbability,
+        previous: "",
+        anterior: "",
+        contextAdjuster: contextAdjuster
+      )
+      currentGramIndex = picked.index
+      return picked.score
     }
+  }
+
+  /// 在單元圖之間以「原始權重 ＋ 上下文加權」擇優。
+  ///
+  /// ## 這個函式為什麼必須存在
+  ///
+  /// 一個 `Homa.Node` 承載該讀音下的**所有**元圖，而 DP 每個節點只看得到一個
+  /// `currentGram`——也就是說「同音詞之間誰勝出」是在節點**內部**決定的，不是 DP
+  /// 在節點之間比出來的。上下文加權若只加在 DP 的路徑分數上（節點外），就只能改變
+  /// 「怎麼斷詞」，永遠改變不了「同一個讀音下選哪個詞」。而後者正是上下文消歧的全部。
+  ///
+  /// - Returns: 勝出的單元圖索引，以及其**已含加權**的分數。
+  private static func pickBestUnigram(
+    in grams: [Homa.Gram],
+    startingAt fallbackIndex: Int,
+    baseline: Double,
+    previous: String,
+    anterior: String,
+    contextAdjuster: Homa.ContextScoreAdjuster
+  )
+    -> (index: Int, score: Double) {
+    var bestIndex = fallbackIndex
+    var bestScore = baseline + contextAdjuster(
+      grams[fallbackIndex].current, grams[fallbackIndex].keyArray, previous, anterior
+    )
+    for (index, gram) in grams.enumerated() {
+      guard index != fallbackIndex else { continue }
+      guard (gram.previous ?? "").isEmpty, (gram.anterior ?? "").isEmpty else { continue }
+      let adjusted = gram.probability + contextAdjuster(gram.current, gram.keyArray, previous, anterior)
+      guard adjusted > bestScore else { continue }
+      bestScore = adjusted
+      bestIndex = index
+    }
+    return (bestIndex, bestScore)
   }
 
   /// 給出目前的最高權元圖當中的權重值（包括雙元圖與三元圖）。該結果可能會受節點覆寫狀態所影響。
@@ -210,9 +267,16 @@ extension Homa.Node {
   ///   - previous: 前述節點內容，用以查詢可能的雙元圖資料。
   ///   - anterior: 前述節點再往前一格的內容，用以查詢可能的三元圖資料（可選）。
   /// - Returns: 權重。
-  internal mutating func getScore(previous: String?, anterior: String? = nil) -> Double {
+  internal mutating func getScore(
+    previous: String?,
+    anterior: String? = nil,
+    contextAdjuster: Homa.ContextScoreAdjuster? = nil
+  )
+    -> Double {
     guard !grams.isEmpty else { return 0 }
-    guard let previous, !previous.isEmpty else { return unigramScore }
+    guard let previous, !previous.isEmpty else {
+      return unigramScore(contextAdjuster: contextAdjuster)
+    }
 
     // 單次線性掃描元圖陣列：同步捕捉「陣列順序上的首個單元圖機率」、「前述內容相符的
     // 最高權重雙元圖」與「前驅二位相符的最高權重三元圖」。匹配不與 currentGram 綁定
@@ -259,9 +323,32 @@ extension Homa.Node {
       // 以 unigram 基線計分——`withTopGramScore` 只釘「選取了哪個 gram」、不釘分數。
       return unigramBaseline
     default:
-      // 有匹配加分且高於 unigram 基線 → 選中 bonus gram；否則將選取指向最佳單元圖
-      // （未匹配語境的 top bigram／trigram 不應留駐輸出）。
-      if let bestBonus, bestBonus.probability > unigramBaseline {
+      // 上下文加權參與單元圖的擇定。加權**只作用於未被覆寫的節點**：`.withSpecified`
+      // 是使用者的明確選擇、`.withTopGramScore` 是既有機制的釘選，兩者的語義都不該
+      // 被本機制動到。
+      var unigramPick: (index: Int, score: Double)?
+      if let contextAdjuster, let firstUnigramIndex {
+        unigramPick = Self.pickBestUnigram(
+          in: grams,
+          startingAt: firstUnigramIndex,
+          baseline: unigramBaseline,
+          previous: previous,
+          anterior: anterior ?? "",
+          contextAdjuster: contextAdjuster
+        )
+      }
+      // 有匹配加分且高於（已含加權的）單元圖擇優結果 → 選中 bonus gram；
+      // 否則將選取指向最佳單元圖（未匹配語境的 top bigram／trigram 不應留駐輸出）。
+      //
+      // bonus 自身也吃加權：否則一個「語境上明顯不對、但剛好有 POM 記憶」的雙元圖
+      // 會永遠壓過語境正確的單元圖，兩套上下文機制就打起來了。
+      let bestBonusAdjusted: Double? = bestBonus.map { bonus in
+        bonus.probability + (
+          contextAdjuster?(bonus.current, bonus.keyArray, previous, anterior ?? "") ?? 0
+        )
+      }
+      let unigramThreshold = unigramPick?.score ?? unigramBaseline
+      if let bestBonus, let bestBonusAdjusted, bestBonusAdjusted > unigramThreshold {
         do {
           try selectOverrideGram(
             keyArray: bestBonus.keyArray,
@@ -270,10 +357,14 @@ extension Homa.Node {
             anterior: bestBonus.anterior,
             type: .withTopGramScore
           )
-          return bestBonus.probability
+          return bestBonusAdjusted
         } catch {
-          // 覆寫失敗：退回 unigram 基線。
+          // 覆寫失敗：退回單元圖。
         }
+      }
+      if let unigramPick {
+        currentGramIndex = unigramPick.index
+        return unigramPick.score
       }
       if let firstUnigramIndex {
         currentGramIndex = firstUnigramIndex

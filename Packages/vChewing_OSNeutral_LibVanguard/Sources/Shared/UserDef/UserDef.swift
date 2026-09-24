@@ -85,6 +85,14 @@ public enum UserDef: String, CaseIterable, Identifiable, Sendable {
   case kShowHanyuPinyinInCompositionBuffer = "ShowHanyuPinyinInCompositionBuffer"
   case kInlineDumpPinyinInLieuOfZhuyin = "InlineDumpPinyinInLieuOfZhuyin"
   case kFetchSuggestionsFromPerceptionOverrideModel = "FetchSuggestionsFromPerceptionOverrideModel"
+  // MARK: SmartContext 的四個獨立開關。
+  //
+  // `kSmartContextEnabled` 是總閘：它為 false 時，其餘三者即使為 true 也一律不生效。
+  // 四者全關時，組句與候選排序必須回到引入 SmartContext 之前的行為（逐位元一致）。
+  case kSmartContextEnabled = "SmartContextEnabled"
+  case kPersonalLearningV2Enabled = "PersonalLearningV2Enabled"
+  case kAppAwareLearningEnabled = "AppAwareLearningEnabled"
+  case kTinyRerankerEnabled = "TinyRerankerEnabled"
   case kUseFixedCandidateOrderOnSelection = "UseFixedCandidateOrderOnSelection"
   case kAutoCorrectReadingCombination = "AutoCorrectReadingCombination"
   case kReadingNarrationCoverage = "ReadingNarrationCoverage"
@@ -687,6 +695,12 @@ extension UserDef {
     case .kShowHanyuPinyinInCompositionBuffer: return .bool(false)
     case .kInlineDumpPinyinInLieuOfZhuyin: return .bool(false)
     case .kFetchSuggestionsFromPerceptionOverrideModel: return .bool(true)
+    // SmartContext 一律預設關閉：它改變的是選字結果，使用者應該是「主動選擇開啟」
+    // 而不是「某次更新之後發現輸入法變了個樣」。
+    case .kSmartContextEnabled: return .bool(false)
+    case .kPersonalLearningV2Enabled: return .bool(false)
+    case .kAppAwareLearningEnabled: return .bool(false)
+    case .kTinyRerankerEnabled: return .bool(false)
     case .kUseFixedCandidateOrderOnSelection: return .bool(false)
     case .kAutoCorrectReadingCombination: return .bool(true)
     case .kReadingNarrationCoverage: return .integer(0)
@@ -1106,6 +1120,22 @@ extension UserDef {
     case .kFetchSuggestionsFromPerceptionOverrideModel: return .init(
         userDef: self, shortTitle: "i18n:UserDef.kFetchSuggestionsFromPerceptionOverrideModel.shortTitle",
         description: "i18n:UserDef.kFetchSuggestionsFromPerceptionOverrideModel.description"
+      )
+    case .kSmartContextEnabled: return .init(
+        userDef: self, shortTitle: "i18n:UserDef.kSmartContextEnabled.shortTitle",
+        description: "i18n:UserDef.kSmartContextEnabled.description"
+      )
+    case .kPersonalLearningV2Enabled: return .init(
+        userDef: self, shortTitle: "i18n:UserDef.kPersonalLearningV2Enabled.shortTitle",
+        description: "i18n:UserDef.kPersonalLearningV2Enabled.description"
+      )
+    case .kAppAwareLearningEnabled: return .init(
+        userDef: self, shortTitle: "i18n:UserDef.kAppAwareLearningEnabled.shortTitle",
+        description: "i18n:UserDef.kAppAwareLearningEnabled.description"
+      )
+    case .kTinyRerankerEnabled: return .init(
+        userDef: self, shortTitle: "i18n:UserDef.kTinyRerankerEnabled.shortTitle",
+        description: "i18n:UserDef.kTinyRerankerEnabled.description"
       )
     case .kReducePOMLifetimeToNoMoreThan12Hours: return .init(
         userDef: self, shortTitle: "i18n:UserDef.kReducePOMLifetimeToNoMoreThan12Hours.shortTitle",
