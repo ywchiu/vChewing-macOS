@@ -417,6 +417,8 @@
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.option.1" = "向前推進一格";
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.option.2" = "復原呼出選字窗之前的游標位置";
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.shortTitle" = "候選字確認後的游標位置:";
+"i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.description" = "唯音平時會告知各客體軟體該採用哪個鍵盤佈局（預設為注音鍵盤佈局）。少數客體會監聽輸入來源的變動、並對收到該佈局做出不良反應，嚴重時甚至會導致在該客體內根本無法切換到唯音。啟用本項會對「客體管理員」清單內的客體略過該步驟。注音打字不受影響：按鍵事件一律依實體按鍵位置重新翻譯，與客體當下採用的佈局無關。";
+"i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.shortTitle" = "不要覆寫受管客體的鍵盤佈局";
 "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.description" = "部分採用 Web 前端介面設計的客體應用可能會無法正常繪製用於輸入法標記模式的分段式粗型下劃線。這個選項將會阻止輸入法藉由 client().setMarkedText() 函式向客體應用傳達對粗型下劃線的分段繪製請求。分段式粗型下劃線僅用於輸入法的標記模式，除非客體應用對 setMarkedText() 這個 IMKTextInput 協定方法的實作有問題。該選項僅影響內文組字區。";
 "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.shortTitle" = "針對被管理的客體，在標記模式下禁用分段式粗型下劃線";
 "i18n:UserDef.kDodgeInvalidEdgeCandidateCursorPosition.shortTitle" = "糾正不合理的端點選字游標位置";

@@ -497,3 +497,66 @@ extension LibVanguardTestsRoot.InputHandlerTests.Session {
     #expect(testHandler.assembler.assembledSentence.map(\.value).joined() == "年終")
   }
 }
+
+extension LibVanguardTestsRoot.InputHandlerTests.Session {
+  /// 受管客體的鍵盤佈局覆寫閘門。
+  ///
+  /// 這道閘存在的理由是：覆寫目標預設為 `com.apple.keylayout.ZhuyinBopomofo`，
+  /// 而它本身就是一個可被選取的輸入來源。對於會監聽輸入來源變動並據其 identifier
+  /// 分支處理的客體，在啟用當下把這個字串推過去足以讓選取被彈回，使用者看到的
+  /// 現象就是「切不過去」。故須有辦法對個別客體完全略過該步驟。
+  @Test("Managed clients can opt out of the keyboard layout override")
+  func testKeyboardLayoutOverrideGateForManagedClients() {
+    let bundleID = testClientProxy.clientBundleIdentifier() ?? ""
+    let originalGate = PrefMgr.sharedSansDidSetOps
+      .disableKeyboardLayoutOverrideForManagedClients
+    let originalList = PrefMgr.sharedSansDidSetOps.clientsIMKTextInputIncapable
+    defer {
+      PrefMgr.sharedSansDidSetOps
+        .disableKeyboardLayoutOverrideForManagedClients = originalGate
+      PrefMgr.sharedSansDidSetOps.clientsIMKTextInputIncapable = originalList
+    }
+    testSession.clientBundleIdentifier = bundleID
+
+    // ① 閘門關閉（預設）：照舊覆寫，與引入本機制之前一致。
+    PrefMgr.sharedSansDidSetOps.disableKeyboardLayoutOverrideForManagedClients = false
+    PrefMgr.sharedSansDidSetOps.clientsIMKTextInputIncapable = [bundleID: true]
+    testClientProxy.clear()
+    testSession.lastAppliedKeyboardLayout = nil
+    testSession.setKeyLayout()
+    #expect(
+      !testClientProxy.overriddenKeyboardLayouts.isEmpty,
+      "閘門關閉時必須維持既有行為"
+    )
+
+    // ② 閘門開啟、且客體有登記：一次都不推。
+    PrefMgr.sharedSansDidSetOps.disableKeyboardLayoutOverrideForManagedClients = true
+    testClientProxy.clear()
+    testSession.lastAppliedKeyboardLayout = nil
+    testSession.setKeyLayout()
+    #expect(
+      testClientProxy.overriddenKeyboardLayouts.isEmpty,
+      "受管客體在閘門開啟時不得收到任何鍵盤佈局覆寫"
+    )
+
+    // ③ 閘門開啟、但客體未登記：不受影響。
+    //    「未登記的客體也一起略過」會是個過寬的措施——這條守著那件事不發生。
+    PrefMgr.sharedSansDidSetOps.clientsIMKTextInputIncapable = [:]
+    testClientProxy.clear()
+    testSession.lastAppliedKeyboardLayout = nil
+    testSession.setKeyLayout()
+    #expect(
+      !testClientProxy.overriddenKeyboardLayouts.isEmpty,
+      "未登記的客體不該被這道閘影響"
+    )
+
+    // ④ 登記但未勾選（清單值為 false）者同樣算受管：這道閘與組字區顯示等級無關，
+    //    判準是「使用者是否曾把這個客體登記進來」。
+    PrefMgr.sharedSansDidSetOps.clientsIMKTextInputIncapable = [bundleID: false]
+    testClientProxy.clear()
+    testSession.lastAppliedKeyboardLayout = nil
+    testSession.setKeyLayout()
+    #expect(testClientProxy.overriddenKeyboardLayouts.isEmpty)
+    #expect(testSession.isManagedClient)
+  }
+}

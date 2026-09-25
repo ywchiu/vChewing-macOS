@@ -7,6 +7,15 @@ import Foundation
 // MARK: - Session + SessionProtocol
 
 extension SessionProtocol {
+  /// 當前客體是否登記在客體管理員的清單內（無論勾選與否）。
+  ///
+  /// 與 `clientMitigationLevel` 刻意分開：後者算的是「組字區顯示策略要退到哪一級」，
+  /// 而本旗標只回答「使用者是否曾經把這個客體登記進來」——有些相容性措施
+  /// （例如略過鍵盤佈局覆寫）與組字區顯示無關，不該被折進那個等級裡。
+  public var isManagedClient: Bool {
+    prefs.clientsIMKTextInputIncapable[clientBundleIdentifier] != nil
+  }
+
   public var clientMitigationLevel: Int {
     var result = prefs.securityHardenedCompositionBuffer ? 2 : 0
     if isClientElectronBased {
