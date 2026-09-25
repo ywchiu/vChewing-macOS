@@ -55,9 +55,9 @@
 				<key>tsInputModePaletteIconFileKey</key>
 				<string>MenuIcon-SCVIM.png</string>
 				<key>tsInputModePrimaryInScriptKey</key>
-				<false/>
+				<true/>
 				<key>tsInputModeScriptKey</key>
-				<string>smUnicode</string>
+				<string>smSimpChinese</string>
 			</dict>
 			<key>org.atelierInmu.inputmethod.vChewing.IMECHT</key>
 			<dict>
@@ -84,9 +84,9 @@
 				<key>tsInputModePaletteIconFileKey</key>
 				<string>MenuIcon-TCVIM.png</string>
 				<key>tsInputModePrimaryInScriptKey</key>
-				<false/>
+				<true/>
 				<key>tsInputModeScriptKey</key>
-				<string>smUnicode</string>
+				<string>smTradChinese</string>
 			</dict>
 		</dict>
 		<key>tsVisibleInputModeOrderedArrayKey</key>

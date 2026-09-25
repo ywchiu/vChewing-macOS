@@ -1,4 +1,6 @@
+
 LegacyZone/[Bb]uild/
+spec/*
 **/Package.resolved
 !**/[Pp]ackages/build/
 **/.index-build/
