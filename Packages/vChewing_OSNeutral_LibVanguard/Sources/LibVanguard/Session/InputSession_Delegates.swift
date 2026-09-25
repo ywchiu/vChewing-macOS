@@ -15,7 +15,7 @@ extension SessionProtocol {
     }
     let toMitigate = prefs.clientsIMKTextInputIncapable[clientBundleIdentifier]
     if let toMitigate = toMitigate {
-      let mitigationValue = toMitigate ? 2 : 0
+      let mitigationValue = toMitigate ? 2 : 1
       result = Swift.max(mitigationValue, result)
     }
     return result
