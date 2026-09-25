@@ -421,6 +421,7 @@ static void (^_IMKSwift_onSettingObjCValue)(uintptr_t, intptr_t, uintptr_t);
 - (void)clientSelectModeWithModeIdentifier:(NSString *)mode {
     id<IMKTextInput> client = [self client];
     if (!client) return;
+    if (![client respondsToSelector:@selector(selectInputMode:)]) return;
     @autoreleasepool {
         [client selectInputMode:mode];
     }
@@ -429,6 +430,7 @@ static void (^_IMKSwift_onSettingObjCValue)(uintptr_t, intptr_t, uintptr_t);
 - (void)clientOverrideKeyboardWithName:(NSString *)name {
     id<IMKTextInput> client = [self client];
     if (!client) return;
+    if (![client respondsToSelector:@selector(overrideKeyboardWithKeyboardNamed:)]) return;
     @autoreleasepool {
         [client overrideKeyboardWithKeyboardNamed:name];
     }
