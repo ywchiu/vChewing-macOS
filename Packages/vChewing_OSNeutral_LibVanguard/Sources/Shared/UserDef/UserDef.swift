@@ -1439,7 +1439,6 @@ extension UserDef {
   /// IMK 文字輸入不相容的客體清單預設值。
   public static let defaultValue4ClientsIMKTextInputIncapable: [String: Bool] = [
     "com.valvesoftware.steam": true,
-    "jp.naver.line.mac": true,
     "com.openai.chat": true,
   ]
 
