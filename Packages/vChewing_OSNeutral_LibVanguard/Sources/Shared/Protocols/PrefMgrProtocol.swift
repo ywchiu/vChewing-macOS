@@ -69,6 +69,8 @@ public protocol PrefMgrProtocol {
   var useSpaceToCommitHighlightedCandidate4SCPC: Bool { get set }
   var enableCandidateWindowAnimation: Bool { get set }
   var disableSegmentedThickUnderlineInMarkingModeForManagedClients: Bool { get set }
+  /// 對登記在客體管理員清單內的客體，不要覆寫其鍵盤佈局。
+  var disableKeyboardLayoutOverrideForManagedClients: Bool { get set }
   var maxCandidateLength: Int { get set }
   var beepSoundPreference: Int { get set }
   var shouldNotFartInLieuOfBeep: Bool { get set }

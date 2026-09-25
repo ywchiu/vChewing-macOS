@@ -409,6 +409,8 @@
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.option.1" = "前へ一歩進める";
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.option.2" = "候補陳列ウィンドウ呼び出し前のカーソル位置に戻す";
 "i18n:UserDef.kCursorPlacementAfterSelectingCandidate.shortTitle" = "候補確定後のカーソル位置:";
+"i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.description" = "威注音は通常、各クライアントアプリに使用すべきキーボードレイアウト（既定では注音ボポモフォ配列）を伝えます。一部のクライアントは入力ソースの変更を監視しており、その配列を渡されると不適切に反応し、最悪の場合そのアプリ内で威注音に切り替えられなくなります。本項目を有効にすると、「クライアント管理」に登録されたアプリではこの手順を省略します。ボポモフォ入力には影響しません。キーイベントはクライアント側の配列に関係なく、物理キー位置から再変換されます。";
+"i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.shortTitle" = "管理対象クライアントのキーボードレイアウトを上書きしない";
 "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.description" = "一部の「Web UI を用いた」客体アプリには、多段式太下線の描きをうまく取り扱えぬ支障はございます。このチェックを入れると、IME から「client().setMarkedText()」を経由して、客体に「多段式太下線を書かずに」と命令することはできます。多段式太下線はマーキングモードだけで用いるデザインですが、間違くて別のモードでもそれを書いてしまう客体アプリはございます（多分 IMKTextInput の実作の問題かもしれません）。このチェックは「文脈内入力緩衝列」だけに関わります。";
 "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.shortTitle" = "管理されている客体アプリには、マーキングモードの多段式太下線の描きを禁ず";
 "i18n:UserDef.kDodgeInvalidEdgeCandidateCursorPosition.shortTitle" = "端末での不合理的な候補選択用カーソル位置を是正";

@@ -120,6 +120,8 @@ public enum UserDef: String, CaseIterable, Identifiable, Sendable {
   case kEnableCandidateWindowAnimation = "EnableCandidateWindowAnimation"
   case kDisableSegmentedThickUnderlineInMarkingModeForManagedClients
     = "DisableSegmentedThickUnderlineInMarkingModeForManagedClients"
+  case kDisableKeyboardLayoutOverrideForManagedClients
+    = "DisableKeyboardLayoutOverrideForManagedClients"
 
   case kCandidateTextFontName = "CandidateTextFontName"
   case kCandidateKeys = "CandidateKeys"
@@ -719,6 +721,7 @@ extension UserDef {
     case .kUseSpaceToCommitHighlightedCandidate4SCPC: return .bool(false)
     case .kEnableCandidateWindowAnimation: return .bool(true)
     case .kDisableSegmentedThickUnderlineInMarkingModeForManagedClients: return .bool(false)
+    case .kDisableKeyboardLayoutOverrideForManagedClients: return .bool(false)
     case .kCandidateTextFontName: return .string("")
     case .kCandidateKeys: return .string(Self.kDefaultCandidateKeys)
     case .kCandidateNarrationToggleType: return .integer(0)
@@ -1272,6 +1275,11 @@ extension UserDef {
         userDef: self,
         shortTitle: "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.shortTitle",
         description: "i18n:UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.description"
+      )
+    case .kDisableKeyboardLayoutOverrideForManagedClients: return .init(
+        userDef: self,
+        shortTitle: "i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.shortTitle",
+        description: "i18n:UserDef.kDisableKeyboardLayoutOverrideForManagedClients.description"
       )
     case .kCandidateTextFontName: return nil
     case .kCandidateKeys: return .init(

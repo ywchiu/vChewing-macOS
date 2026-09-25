@@ -167,6 +167,23 @@ extension SessionProtocol {
   /// - Note: `lastAppliedKeyboardLayout` 在 async block 內部寫入（而非同步寫入），
   ///   避免 async task 靜默失敗（例：clientProxy 為 nil）時緩存變成「已套用但未實際發生」的髒狀態。
   public func setKeyLayout() {
+    // 對登記在客體管理員清單內的客體，可選擇完全不覆寫其鍵盤佈局。
+    //
+    // ## 為什麼需要這一道閘
+    //
+    // 覆寫的目標預設是 `com.apple.keylayout.ZhuyinBopomofo`，而**它本身就是一個
+    // 可被選取的輸入來源**、隸屬 TradChinese script、其 identifier 轉小寫之後
+    // 還含有 `bopomofo` 字樣。對於會去監聽
+    // `NSTextInputContextKeyboardSelectionDidChangeNotification`、並據當前輸入來源
+    // identifier 分支處理的客體（LINE 即為一例），在啟用當下推一個這樣的字串過去，
+    // 足以讓該客體把輸入來源的選取彈回去——使用者看到的現象就是「切不過去」。
+    //
+    // 略過覆寫**不影響注音打字**：`InputSession_HandleEvent` 會以
+    // `layoutTranslated(to:)` 依實體 keyCode 重新翻譯事件，而非採用客體端交付的字元；
+    // 且 `com.apple.keylayout.ZhuyinBopomofo` 並不在 `LatinKeyboardMappings` 之內，
+    // 本來就 fallback 到 `.qwerty`。也就是說本偏好的唯一作用，就是決定要不要把那個
+    // 字串推給客體。
+    if prefs.disableKeyboardLayoutOverrideForManagedClients, isManagedClient { return }
     let targetLayout: String =
       (isASCIIMode && SessionHost.shared.isDynamicBasicKeyboardLayoutEnabled())
         ? prefs.alphanumericalKeyboardLayout
