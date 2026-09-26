@@ -50,14 +50,15 @@
 
     @discardableResult
     public static func registerInputMethod() -> Bool {
-      let instances = TISInputSource.allRegisteredInstancesOfThisInputMethod
-      if instances.isEmpty {
+      var instances = TISInputSource.allRegisteredInstancesOfThisInputMethod
+      if instances.isEmpty || instances.count < TISInputSource.modes.count {
         // 有實例尚未登記。執行登記手續。
         consoleLog("Registering input source.")
         if !TISInputSource.registerInputSource() {
           consoleLog("Input source registration failed.")
           return false
         }
+        instances = TISInputSource.allRegisteredInstancesOfThisInputMethod
       }
       var succeeded = true
       instances.forEach {

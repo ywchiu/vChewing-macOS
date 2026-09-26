@@ -721,7 +721,7 @@ extension UserDef {
     case .kUseSpaceToCommitHighlightedCandidate4SCPC: return .bool(false)
     case .kEnableCandidateWindowAnimation: return .bool(true)
     case .kDisableSegmentedThickUnderlineInMarkingModeForManagedClients: return .bool(false)
-    case .kDisableKeyboardLayoutOverrideForManagedClients: return .bool(false)
+    case .kDisableKeyboardLayoutOverrideForManagedClients: return .bool(true)
     case .kCandidateTextFontName: return .string("")
     case .kCandidateKeys: return .string(Self.kDefaultCandidateKeys)
     case .kCandidateNarrationToggleType: return .integer(0)
