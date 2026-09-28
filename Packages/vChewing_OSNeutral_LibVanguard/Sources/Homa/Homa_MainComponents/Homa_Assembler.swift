@@ -38,6 +38,9 @@ extension Homa {
       self.gramQuerier = target.gramQuerier
       self.gramAvailabilityChecker = target.gramAvailabilityChecker
       self.perceptor = target.perceptor
+      // 拷貝體必須沿用同一個加權鉤子，否則 copilot 窗（`assembler.copy`）的組句預覽
+      // 會與主組字器給出不同的結果。
+      self.contextScoreAdjuster = target.contextScoreAdjuster
       self.gramQueryCache = target.gramQueryCache
       self.gramQueryCacheOrder = target.gramQueryCacheOrder
       self.mostRecentPathScore = target.mostRecentPathScore
@@ -65,6 +68,12 @@ extension Homa {
     public var gramAvailabilityChecker: Homa.GramAvailabilityChecker?
     /// 用以洞察使用者字詞節點覆寫行為的 API。
     public var perceptor: BehaviorPerceptor?
+    /// 組句評分的上下文加權鉤子；`nil`（預設）時組句行為與未引入本機制前**逐位元一致**。
+    ///
+    /// 語義、效能契約與禁止事項一律見 `Homa.ContextScoreAdjuster` 的說明。
+    /// - Remark: 之所以掛在 `Assembler`（class）而非 `Homa.Config`（struct）：
+    ///   `Config` 遵循 `Codable, Hashable`，裝不下閉包。
+    public var contextScoreAdjuster: ContextScoreAdjuster?
     /// 組態設定。
     /// - Remark: setter 為 `internal`：組字器在模組內部需要就地改寫節點狀態（節點為
     /// Struct、無法再靠引用穿透值拷貝），但對模組外部維持唯讀。

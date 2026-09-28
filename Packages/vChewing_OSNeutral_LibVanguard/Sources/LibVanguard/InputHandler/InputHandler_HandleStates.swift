@@ -523,6 +523,16 @@ extension InputHandlerProtocol {
 
   /// 組字區可以投影成 BPMFVS 顯示，但一般遞交流程只能吃原始內容。
   public func committableDisplayText(sansReading: Bool = false) -> String {
+    // 詞組學習的觀察點。
+    //
+    // 本函式是所有遞交路徑的匯流處（`handleEnter`、候選確認、以及
+    // `SessionCoreProtocol` 於 `.ofEmpty` 轉移時的自動遞交），而中斷（`.ofAbortion`）
+    // 不會走到這裡——正是「這串東西真的被送出去了」的那一刻，也就是唯一該拿來
+    // 學習的時刻。函式本身仍然只回傳字串，觀察不影響其回傳值。
+    observeSmartPhrases()
+    // 學習階段打字日誌的記錄點（Phase 7）。預設完全不作用——見
+    // `isTypingJournalEffective` 的三道關。
+    recordTypingJournalEntry()
     let handleAsCodePointInput = currentTypingMethod == .codePoint && !sansReading
     let handleAsRomanNumeralInput = currentTypingMethod == .romanNumerals && !sansReading
     var displayTextSegments: [String] = handleAsCodePointInput || handleAsRomanNumeralInput

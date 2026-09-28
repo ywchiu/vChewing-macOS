@@ -20,6 +20,16 @@ public final class SecurityAgentHelper {
 
   public static let shared = SecurityAgentHelper()
 
+  /// 系統目前是否處於安全輸入狀態（密碼欄位等）。
+  ///
+  /// `IsSecureEventInputEnabled()` 只是讀一格 CGS session 狀態，成本與
+  /// `SecureEventInputSputnik` 那組要走 IORegistry 的查詢完全不同級，可以放心
+  /// 在打字路徑上呼叫。目前唯一的呼叫端是學習階段打字日誌（Phase 7）：
+  /// **密碼一個字都不准進日誌。**
+  public static var isSecureInputActive: Bool {
+    IsSecureEventInputEnabled()
+  }
+
   public func deployTimer() {
     timer = Timer.scheduledTimer(
       timeInterval: 60, target: self, selector: #selector(checkAndHandle(_:)), userInfo: nil,

@@ -451,6 +451,70 @@ extension IMEMenuSputnik {
           }
         )
         .alternated()
+      // SmartContext 的學習資料與 POM 分開清除：兩者是不同的記憶，
+      // 使用者可能只想清掉其中一種。本項於 SmartContext 總開關關閉時隱藏——
+      // 功能沒開啟時，選單裡擺一個清除它的項目只會讓人困惑。
+      NSMenu.Item("i18n:Menu.ClearSmartContextLearningData")?
+        .act(
+          register {
+            LXMgr.clearSmartContextLearningData(IMEApp.currentInputMode)
+            LXMgr.clearSmartContextLearningData(IMEApp.currentInputMode.reversed)
+          }
+        )
+        .nulled(!PrefMgr.shared.smartContextEnabled)
+      // Option 鍵的替身項：只清掉「當前這一類應用程式」的用字偏好。
+      // 需求書要求分別提供「清除全部」與「重設單一 app 的學習」兩個入口；
+      // 做成替身項而非另一列，是因為本選單已經以這個形狀配對過同類動作
+      // （最佳化／清除臨時記憶就是一對），多開一列只會讓選單更長。
+      NSMenu.Item("i18n:Menu.ResetSmartContextLearningDataForThisApp")?
+        .act(
+          register {
+            let category = LXAssembly.SmartAppCategory.categorize(
+              bundleID: self.core?.clientBundleIdentifier
+            )
+            LXMgr.resetSmartContextLearningData(for: category, mode: IMEApp.currentInputMode)
+            LXMgr.resetSmartContextLearningData(
+              for: category, mode: IMEApp.currentInputMode.reversed
+            )
+          }
+        )
+        .alternated()
+        .nulled(!PrefMgr.shared.smartContextEnabled)
+      // 學習階段打字日誌（Phase 7）。整組只在使用者自己打開該偏好時才出現——
+      // 這是全案唯一會留下原文的功能，沒開啟時連入口都不該在選單裡晃。
+      NSMenu.Item(
+        verbatim: LXMgr.isTypingJournalRecording(IMEApp.currentInputMode)
+          ? "i18n:Menu.TypingJournal.Stop".i18n
+          : "i18n:Menu.TypingJournal.Start".i18n
+      )?
+        .act(
+          register {
+            if LXMgr.isTypingJournalRecording(IMEApp.currentInputMode) {
+              LXMgr.stopTypingJournal(IMEApp.currentInputMode)
+            } else {
+              // 錄「你人在的這一類 app」：允許清單自當下的客體推得，
+              // 使用者不必事先在設定裡想像自己等一下會在哪裡打字。
+              LXMgr.startTypingJournal(
+                IMEApp.currentInputMode,
+                including: .categorize(bundleID: self.core?.clientBundleIdentifier)
+              )
+            }
+          }
+        )
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
+      NSMenu.Item("i18n:Menu.TypingJournal.Export")?
+        .act(
+          register {
+            guard let url = LXMgr.exportTypingJournalToDataFolder(IMEApp.currentInputMode)
+            else { return }
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+          }
+        )
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
+      NSMenu.Item("i18n:Menu.TypingJournal.Clear")?
+        .act(register { LXMgr.clearTypingJournal(IMEApp.currentInputMode) })
+        .alternated()
+        .nulled(!PrefMgr.shared.typingJournalEnabled)
 
       NSMenu.Item.separator() // ---------------------
       NSMenu.Item("i18n:Menu.CheckForUpdates")?

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "name": "held-out",
+  "cases": [
+    {
+      "id": "held-wangji-season",
+      "precedingText": "旅遊",
+      "precedingReadings": ["ㄌㄩˇ", "ㄧㄡˊ"],
+      "readings": ["ㄨㄤˋ", "ㄐㄧˋ"],
+      "expected": "旺季",
+      "competitors": ["忘記"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-jiedao-street",
+      "precedingText": "走在",
+      "precedingReadings": ["ㄗㄡˇ", "ㄗㄞˋ"],
+      "readings": ["ㄐㄧㄝ", "ㄉㄠˋ"],
+      "expected": "街道",
+      "competitors": ["接到"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-xinsheng-voice",
+      "precedingText": "孩子的",
+      "precedingReadings": ["ㄏㄞˊ", "ㄗ˙", "ㄉㄜ˙"],
+      "readings": ["ㄒㄧㄣ", "ㄕㄥ"],
+      "expected": "心聲",
+      "competitors": ["新生"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-zizhi-homemade",
+      "precedingText": "自己",
+      "precedingReadings": ["ㄗˋ", "ㄐㄧˇ"],
+      "readings": ["ㄗˋ", "ㄓˋ"],
+      "expected": "自製",
+      "competitors": ["自治", "自制"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-shiwei-decline",
+      "precedingText": "逐漸",
+      "precedingReadings": ["ㄓㄨˊ", "ㄐㄧㄢˋ"],
+      "readings": ["ㄕˋ", "ㄨㄟ"],
+      "expected": "式微",
+      "competitors": ["示威"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-lixing-practice",
+      "precedingText": "身體",
+      "precedingReadings": ["ㄕㄣ", "ㄊㄧˇ"],
+      "readings": ["ㄌㄧˋ", "ㄒㄧㄥˊ"],
+      "expected": "力行",
+      "competitors": ["例行", "厲行"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-gongshe-commune",
+      "precedingText": "人民",
+      "precedingReadings": ["ㄖㄣˊ", "ㄇㄧㄣˊ"],
+      "readings": ["ㄍㄨㄥ", "ㄕㄜˋ"],
+      "expected": "公社",
+      "competitors": ["公設", "工設"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-zhiqi-childish",
+      "precedingText": "滿臉",
+      "precedingReadings": ["ㄇㄢˇ", "ㄌㄧㄢˇ"],
+      "readings": ["ㄓˋ", "ㄑㄧˋ"],
+      "expected": "稚氣",
+      "competitors": ["志氣", "滯氣"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-wuxia-flawless",
+      "precedingText": "完美",
+      "precedingReadings": ["ㄨㄢˊ", "ㄇㄟˇ"],
+      "readings": ["ㄨˊ", "ㄒㄧㄚˊ"],
+      "expected": "無瑕",
+      "competitors": ["無暇", "巫峽"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-zhixin-salary",
+      "precedingText": "按月",
+      "precedingReadings": ["ㄢˋ", "ㄩㄝˋ"],
+      "readings": ["ㄓ", "ㄒㄧㄣ"],
+      "expected": "支薪",
+      "competitors": ["知心"],
+      "appCategory": "mail",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-jiangjie-due",
+      "precedingText": "期限",
+      "precedingReadings": ["ㄑㄧˊ", "ㄒㄧㄢˋ"],
+      "readings": ["ㄐㄧㄤ", "ㄐㄧㄝˋ"],
+      "expected": "將屆",
+      "competitors": ["疆界", "江介"],
+      "appCategory": "mail",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-shangqing-market",
+      "precedingText": "市場",
+      "precedingReadings": ["ㄕˋ", "ㄔㄤˇ"],
+      "readings": ["ㄕㄤ", "ㄑㄧㄥˊ"],
+      "expected": "商情",
+      "competitors": ["傷情"],
+      "appCategory": "mail",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-duijiang-redeem",
+      "precedingText": "憑券",
+      "precedingReadings": ["ㄆㄧㄥˊ", "ㄑㄩㄢˋ"],
+      "readings": ["ㄉㄨㄟˋ", "ㄐㄧㄤˇ"],
+      "expected": "兌獎",
+      "competitors": ["對獎", "對講"],
+      "appCategory": "mail",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-duijie-integrate",
+      "precedingText": "系統",
+      "precedingReadings": ["ㄒㄧˋ", "ㄊㄨㄥˇ"],
+      "readings": ["ㄉㄨㄟˋ", "ㄐㄧㄝ"],
+      "expected": "對接",
+      "competitors": ["對街"],
+      "appCategory": "editor",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-bianshi-recognize",
+      "precedingText": "臉部",
+      "precedingReadings": ["ㄌㄧㄢˇ", "ㄅㄨˋ"],
+      "readings": ["ㄅㄧㄢˋ", "ㄕˋ"],
+      "expected": "辨識",
+      "competitors": ["便是", "辯士"],
+      "appCategory": "editor",
+      "tags": ["held-out", "homophone"]
+    },
+    {
+      "id": "held-nongcun-gongshe",
+      "precedingText": "農村",
+      "precedingReadings": ["ㄋㄨㄥˊ", "ㄘㄨㄣ"],
+      "readings": ["ㄍㄨㄥ", "ㄕㄜˋ"],
+      "expected": "公社",
+      "competitors": ["公設"],
+      "appCategory": "chat",
+      "tags": ["held-out", "homophone"]
+    }
+  ]
+}

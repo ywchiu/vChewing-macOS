@@ -63,16 +63,22 @@ extension Homa.Assembler {
     // （原先每次候選窗開啟都會產生 O(n·log n) 個一次性字串）。
     // 排序鍵順序：先 segment length（降序）、再 probability（降序）、再 keyArray 字面
     // （降序）——與 `queryGrams` 的 `sortGram` 語義一致（先權重、後索引鍵字面）。
+    //
+    // 上下文加權只進**排序鍵**，不改 `candidate.weight`：後者是 LibVanguard 用來與
+    // POM 建議比分的基準（`filterPOMAppendables`），把加權混進去會讓那道比較的門檻
+    // 隨語境浮動，等於讓兩套機制互相干擾。
+    let adjuster = contextScoreAdjuster
     let keyed = result.map { candidate in
-      (
+      let boost = adjuster?(candidate.pair.value, candidate.pair.keyArray, "", "") ?? 0
+      return (
         segLength: candidate.pair.segLength,
-        weight: candidate.weight,
+        sortWeight: candidate.weight + boost,
         joinedKey: candidate.pair.keyArray.joined(separator: "-"),
         candidate: candidate
       )
     }
     return keyed.sorted {
-      ($0.segLength, $0.weight, $0.joinedKey) > ($1.segLength, $1.weight, $1.joinedKey)
+      ($0.segLength, $0.sortWeight, $0.joinedKey) > ($1.segLength, $1.sortWeight, $1.joinedKey)
     }.map(\.candidate)
   }
 

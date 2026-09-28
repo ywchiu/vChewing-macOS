@@ -288,6 +288,32 @@ let package = Package(
         LinkerSetting.linkedLibrary("iconv", .when(platforms: [.macOS]))
       }
     )
+    // SmartContext 的效能／準確率基準靶。
+    //
+    // 與其它測試靶分開的理由有二：① 它會把整份原廠辭典掛上 `LXFacade.factoryTrie`
+    // 這個行程內全域槽位，與其它靶共處一靶只會互相踩踏；② 它的產出是「數字與報表」
+    // 而非通過／失敗，平時以 `swift test --filter SmartContextBench` 單獨呼叫即可，
+    // 不必讓每一次 `swift test` 都付出它的時間。
+    Target.testTarget(
+      name: "SmartContextBenchTests",
+      dependencies: buildTargetDependencies {
+        "LibVanguard"
+        "LexiconAssembly"
+        "LXAssemblyMaterials4Tests"
+        "Homa"
+        "Shared"
+        "Tekkon"
+      },
+      resources: buildResources {
+        Resource.process("Resources")
+      },
+      swiftSettings: buildSwiftSettings {
+        .defaultIsolation(MainActor.self) // set Default Actor Isolation
+      },
+      linkerSettings: buildLinkerSettings {
+        LinkerSetting.linkedLibrary("iconv", .when(platforms: [.macOS]))
+      }
+    )
   },
   swiftLanguageModes: [.v6]
 )

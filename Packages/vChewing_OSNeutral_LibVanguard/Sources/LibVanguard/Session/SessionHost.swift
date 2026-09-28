@@ -120,6 +120,29 @@ public final class SessionHost {
 
   /// 取得指定模式下的感知模型（POM）資料路徑。
   public var pomDataURL: (Shared.InputMode) -> URL? = { _ in nil }
+  /// 取得指定模式下的個人用字偏好（SmartContext Personal Learning v2）資料路徑。
+  ///
+  /// 與 `pomDataURL` 是**兩個不同的檔案**：POM 的格式不動、本表另存一份，
+  /// 這樣任一邊壞掉或被清除都不會波及另一邊。未注入時為 nil，此時偏好只存在於
+  /// 記憶體、隨行程結束而消失。
+  public var smartPreferenceDataURL: (Shared.InputMode) -> URL? = { _ in nil }
+  /// 取得指定模式下的詞組學習（SmartContext Phase 5）資料路徑。
+  ///
+  /// 又是一個獨立檔案：詞組學習與用字偏好的生命週期、清除時機都不同，
+  /// 混在一份檔案裡只會讓「只想清掉學到的詞組」這種要求做不到。
+  public var smartPhraseDataURL: (Shared.InputMode) -> URL? = { _ in nil }
+  /// 取得指定模式下的學習階段打字日誌（SmartContext Phase 7）資料路徑。
+  ///
+  /// 第三個獨立檔案。它與前兩者的差別在於**內容性質**：前兩者存的是統計數字，
+  /// 這一份存的是使用者打過的原文。分開存，是為了讓「清掉日誌」能夠真的只清掉日誌、
+  /// 而且清得徹底（整個檔案刪除，不是把欄位清空）。
+  public var typingJournalDataURL: (Shared.InputMode) -> URL? = { _ in nil }
+  /// 是否處於安全輸入狀態（密碼欄位等）。
+  ///
+  /// 為 true 時，打字日誌**一個字都不會記**。這一格由 Darwin 端注入；未注入時恆為
+  /// false，而那是安全的預設——因為在沒有注入它的環境裡（例如測試與 Linux 建置），
+  /// 根本不存在安全輸入這回事。
+  public var isSecureInputActive: () -> Bool = { false }
   /// 候選字鍵驗證。
   public var validateCandidateKeys: (_ prefs: any PrefMgrProtocol, _ keys: String) -> String? =
     { _, _ in nil }

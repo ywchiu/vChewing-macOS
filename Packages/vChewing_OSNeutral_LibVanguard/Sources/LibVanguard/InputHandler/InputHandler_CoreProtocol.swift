@@ -48,6 +48,7 @@ public protocol InputHandlerProtocol: AnyObject {
   var calligrapher: String { get set } // 磁帶專用組筆區
   var mixedAlnumConfig: MixedAlnumConfig { get set } // 中英混打模式之執行期狀態
   var furiousConfig: FuriousTypingConfig { get set } // 狂拼模式之執行期狀態
+  var smartContextConfig: SmartContextRuntimeConfig { get set } // SmartContext 之執行期狀態
   var composer: Tekkon.Composer { get set } // 注拼槽
   var assembler: Homa.Assembler { get set } // 組字器
 }
@@ -243,6 +244,11 @@ extension InputHandlerProtocol {
     currentTypingMethod = .vChewingFactory
     backupCursor = nil
     furiousConfig.resetAll() // 狀態重置：狂拼之整批執行期狀態（trail＋當拍狀態）一併失效。
+    // 組字器已清空，任何以舊組字區為前提編出來的加權表都已失效。
+    // session-local 的選字／修正記錄刻意**不**在此清除——它們的時間尺度是「這一段輸入」，
+    // 而 `clear()` 每遞交一次就會被呼叫一次。整批清除走 `clearSmartContextState()`。
+    smartContextConfig.invalidate()
+    assembler.contextScoreAdjuster = nil
   }
 
   /// 解除中英混打之「閂滯於英打」狀態。
@@ -312,6 +318,25 @@ extension InputHandlerProtocol {
     let theCandidate: Homa.CandidatePair = .init(candidate)
     let preservedSentenceBeforeConsolidation = assembler.assembledSentence
     let preservedCursorPosition = actualNodeCursorPosition
+    // SmartContext 的 session-local 訊號：只採計**使用者顯式選字**。
+    // Enter 固化高亮候選、POM 自動套用等「非使用者本人決定」的路徑一律不記——
+    // 那些是系統自己的猜測，拿它們回頭餵自己只會讓偏差自我強化。
+    if explicitlyChosen, isSmartContextEffective {
+      let displacedValue = preservedSentenceBeforeConsolidation
+        .findGram(at: preservedCursorPosition)?.gram.value
+      smartContextConfig.noteSelection(theCandidate.value, appCategory: currentAppCategory)
+      if let displacedValue, displacedValue != theCandidate.value {
+        smartContextConfig.noteCorrection(from: displacedValue, to: theCandidate.value)
+      }
+      // 跨 session 的那一份（Personal Learning v2）。語境取「游標之前的已定詞」，
+      // 與 `makeSmartInputContext()` 取的是同一組，否則寫進去的鍵與日後查詢的鍵對不上。
+      recordSmartPreference(
+        for: theCandidate,
+        displacing: displacedValue,
+        within: preservedSentenceBeforeConsolidation,
+        at: preservedCursorPosition
+      )
+    }
 
     /// 必須先鞏固當前組字器游標上下文、以消滅意料之外的影響，但在內文組字區內就地輪替候選字詞時除外。
     if preConsolidate { consolidateCursorContext(with: theCandidate) }
@@ -757,6 +782,11 @@ extension InputHandlerProtocol {
       }
     }
 
+    // Phase 6：候選重排器的唯一呼叫點。預設沒有重排器，此時本呼叫是個早退。
+    // 契約（只重排不生成、只看 Top-N、逾時即放棄）一律由
+    // `LXAssembly.rerankCandidates` 強制執行，不仰賴實作者自律。
+    arrCandidates = applySmartCandidateReranker(to: arrCandidates)
+
     return arrCandidates.map { ($0.keyArray, $0.value) }
   }
 
@@ -837,7 +867,13 @@ extension InputHandlerProtocol {
       }
     }
 
+    // App 區隔：POM 有**兩條**通路會把記憶送到使用者面前——`LXFacade.unigramsFor`
+    // 的元圖注入（影響組句），以及本建議通道（把候選置頂到選字窗）。兩條都得攔，
+    // 只攔一條的話會出現「句子對了、但選字窗第一個還是別的 app 教的那個詞」。
+    let appPartition = smartPOMAppPartition()
+
     return suggestion.candidates.compactMap { candidate in
+      if let appPartition, appPartition(candidate.value, candidate.previous) { return nil }
       let keyString = candidate.keyArray.joined(separator: separator)
       let suggestedUnigram = Homa.Gram(
         keyArray: candidate.keyArray,

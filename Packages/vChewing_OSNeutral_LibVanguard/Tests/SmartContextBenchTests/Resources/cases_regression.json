@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "name": "regression",
+  "cases": [
+    {
+      "id": "reg-tw-jieyun",
+      "precedingText": "搭",
+      "precedingReadings": ["ㄉㄚ"],
+      "readings": ["ㄐㄧㄝˊ", "ㄩㄣˋ"],
+      "expected": "捷運",
+      "competitors": ["劫運"],
+      "tags": ["zh-TW", "daily"]
+    },
+    {
+      "id": "reg-tw-biandang",
+      "precedingText": "買",
+      "precedingReadings": ["ㄇㄞˇ"],
+      "readings": ["ㄅㄧㄢˋ", "ㄉㄤ"],
+      "expected": "便當",
+      "tags": ["zh-TW", "daily"]
+    },
+    {
+      "id": "reg-tw-wanglu",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄨㄤˇ", "ㄌㄨˋ"],
+      "expected": "網路",
+      "tags": ["zh-TW", "tech"]
+    },
+    {
+      "id": "reg-tw-jiyiti",
+      "precedingText": "電腦的",
+      "precedingReadings": ["ㄉㄧㄢˋ", "ㄋㄠˇ", "ㄉㄜ˙"],
+      "readings": ["ㄐㄧˋ", "ㄧˋ", "ㄊㄧˇ"],
+      "expected": "記憶體",
+      "tags": ["zh-TW", "tech"]
+    },
+    {
+      "id": "reg-tw-yingdie",
+      "precedingText": "這顆",
+      "precedingReadings": ["ㄓㄜˋ", "ㄎㄜ"],
+      "readings": ["ㄧㄥˋ", "ㄉㄧㄝˊ"],
+      "expected": "硬碟",
+      "tags": ["zh-TW", "tech"]
+    },
+    {
+      "id": "reg-tw-zhiyuan",
+      "precedingText": "提供",
+      "precedingReadings": ["ㄊㄧˊ", "ㄍㄨㄥˋ"],
+      "readings": ["ㄓ", "ㄩㄢˊ"],
+      "expected": "支援",
+      "tags": ["zh-TW", "tech"]
+    },
+    {
+      "id": "reg-tw-ruanti",
+      "precedingText": "這套",
+      "precedingReadings": ["ㄓㄜˋ", "ㄊㄠˋ"],
+      "readings": ["ㄖㄨㄢˇ", "ㄊㄧˇ"],
+      "expected": "軟體",
+      "tags": ["zh-TW", "tech"]
+    },
+    {
+      "id": "reg-general-wenti",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄨㄣˋ", "ㄊㄧˊ"],
+      "expected": "問題",
+      "tags": ["general"]
+    },
+    {
+      "id": "reg-general-yijing",
+      "precedingText": "我們",
+      "precedingReadings": ["ㄨㄛˇ", "ㄇㄣ˙"],
+      "readings": ["ㄧˇ", "ㄐㄧㄥ"],
+      "expected": "已經",
+      "tags": ["general"]
+    },
+    {
+      "id": "reg-general-xuyao",
+      "precedingText": "我們",
+      "precedingReadings": ["ㄨㄛˇ", "ㄇㄣ˙"],
+      "readings": ["ㄒㄩ", "ㄧㄠˋ"],
+      "expected": "需要",
+      "competitors": ["須要"],
+      "tags": ["general"]
+    },
+    {
+      "id": "reg-general-juede",
+      "precedingText": "我",
+      "precedingReadings": ["ㄨㄛˇ"],
+      "readings": ["ㄐㄩㄝˊ", "ㄉㄜˊ"],
+      "expected": "覺得",
+      "tags": ["general"]
+    },
+    {
+      "id": "reg-general-yinggai",
+      "precedingText": "應該",
+      "precedingReadings": ["ㄧㄥ", "ㄍㄞ"],
+      "readings": ["ㄎㄜˇ", "ㄧˇ"],
+      "expected": "可以",
+      "tags": ["general"]
+    },
+    {
+      "id": "reg-mail-kehu",
+      "precedingText": "這位",
+      "precedingReadings": ["ㄓㄜˋ", "ㄨㄟˋ"],
+      "readings": ["ㄎㄜˋ", "ㄏㄨˋ"],
+      "expected": "客戶",
+      "appCategory": "mail",
+      "tags": ["mail"]
+    },
+    {
+      "id": "reg-mail-fapiao",
+      "precedingText": "這張",
+      "precedingReadings": ["ㄓㄜˋ", "ㄓㄤ"],
+      "readings": ["ㄈㄚ", "ㄆㄧㄠˋ"],
+      "expected": "發票",
+      "appCategory": "mail",
+      "tags": ["mail"]
+    },
+    {
+      "id": "reg-mail-huiyi",
+      "precedingText": "明天",
+      "precedingReadings": ["ㄇㄧㄥˊ", "ㄊㄧㄢ"],
+      "readings": ["ㄏㄨㄟˋ", "ㄧˋ"],
+      "expected": "會議",
+      "competitors": ["會意"],
+      "appCategory": "mail",
+      "tags": ["mail"]
+    },
+    {
+      "id": "reg-mail-heyue",
+      "precedingText": "這份",
+      "precedingReadings": ["ㄓㄜˋ", "ㄈㄣˋ"],
+      "readings": ["ㄏㄜˊ", "ㄩㄝ"],
+      "expected": "合約",
+      "competitors": ["和約"],
+      "appCategory": "mail",
+      "tags": ["mail"]
+    },
+    {
+      "id": "reg-mail-baojia",
+      "precedingText": "這份",
+      "precedingReadings": ["ㄓㄜˋ", "ㄈㄣˋ"],
+      "readings": ["ㄅㄠˋ", "ㄐㄧㄚˋ"],
+      "expected": "報價",
+      "competitors": ["報架"],
+      "appCategory": "mail",
+      "tags": ["mail"]
+    },
+    {
+      "id": "reg-tech-chaxun",
+      "precedingText": "資料庫",
+      "precedingReadings": ["ㄗ", "ㄌㄧㄠˋ", "ㄎㄨˋ"],
+      "readings": ["ㄔㄚˊ", "ㄒㄩㄣˊ"],
+      "expected": "查詢",
+      "competitors": ["查尋"],
+      "appCategory": "editor",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-wujian",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄨˋ", "ㄐㄧㄢˋ"],
+      "expected": "物件",
+      "competitors": ["晤見"],
+      "appCategory": "editor",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-moxing",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄇㄛˊ", "ㄒㄧㄥˊ"],
+      "expected": "模型",
+      "competitors": ["魔型", "摸型"],
+      "appCategory": "editor",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-xiangliang",
+      "precedingText": "這個",
+      "precedingReadings": ["ㄓㄜˋ", "ㄍㄜ˙"],
+      "readings": ["ㄒㄧㄤˋ", "ㄌㄧㄤˋ"],
+      "expected": "向量",
+      "appCategory": "editor",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-suoyin",
+      "precedingText": "建立",
+      "precedingReadings": ["ㄐㄧㄢˋ", "ㄌㄧˋ"],
+      "readings": ["ㄙㄨㄛˇ", "ㄧㄣˇ"],
+      "expected": "索引",
+      "competitors": ["索隱"],
+      "appCategory": "editor",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-bianyi",
+      "precedingText": "正在",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄞˋ"],
+      "readings": ["ㄅㄧㄢ", "ㄧˋ"],
+      "expected": "編譯",
+      "competitors": ["邊裔"],
+      "appCategory": "terminal",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-tech-zhixing",
+      "precedingText": "正在",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄞˋ"],
+      "readings": ["ㄓˊ", "ㄒㄧㄥˊ"],
+      "expected": "執行",
+      "competitors": ["直行"],
+      "appCategory": "terminal",
+      "tags": ["tech"]
+    },
+    {
+      "id": "reg-name-linzhiling",
+      "precedingText": "我看到",
+      "precedingReadings": ["ㄨㄛˇ", "ㄎㄢˋ", "ㄉㄠˋ"],
+      "readings": ["ㄌㄧㄣˊ", "ㄓˋ", "ㄌㄧㄥˊ"],
+      "expected": "林志玲",
+      "tags": ["name"]
+    },
+    {
+      "id": "reg-company-taijidian",
+      "precedingText": "投資",
+      "precedingReadings": ["ㄊㄡˊ", "ㄗ"],
+      "readings": ["ㄊㄞˊ", "ㄐㄧ", "ㄉㄧㄢˋ"],
+      "expected": "台積電",
+      "tags": ["company"]
+    },
+    {
+      "id": "reg-company-huashuo",
+      "precedingText": "買了",
+      "precedingReadings": ["ㄇㄞˇ", "ㄌㄜ˙"],
+      "readings": ["ㄏㄨㄚˊ", "ㄕㄨㄛˋ"],
+      "expected": "華碩",
+      "tags": ["company"]
+    },
+    {
+      "id": "reg-company-lianfake",
+      "precedingText": "投資",
+      "precedingReadings": ["ㄊㄡˊ", "ㄗ"],
+      "readings": ["ㄌㄧㄢˊ", "ㄈㄚ", "ㄎㄜ"],
+      "expected": "聯發科",
+      "tags": ["company"]
+    }
+  ]
+}

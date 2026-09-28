@@ -12,6 +12,10 @@ extension InputHandlerProtocol {
     guard let session = session else { return false }
     var state: State { session.state }
     currentLM.syncPrefs()
+    // SmartContext 的加權表在此重編：此刻的組字區內容正好是「本拍按鍵之前的語境」，
+    // 也就是本拍若插入讀音時 DP 所需要的那一份。**必須在這裡、不能在 DP 裡**——
+    // 見 `Homa.ContextScoreAdjuster` 的效能契約。語境未變時本呼叫是個早退。
+    refreshSmartContextAdjuster()
 
     // 狂拼固化：前方候選窗顯示中、按下「可能叫出選字窗」的鍵（Space／翻頁／候選導航
     // 方向鍵）時，先把前方投機讀音固化進組字器（投機→實體：只插聲調桶、不覆寫，

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "name": "correction-learning",
+  "cases": [
+    {
+      "id": "corr-hanshi-once",
+      "kind": "correctionLearning",
+      "precedingText": "正宗",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄨㄥ"],
+      "readings": ["ㄏㄢˊ", "ㄕˋ"],
+      "expected": "韓式",
+      "competitors": ["函式"],
+      "repeatCount": 1,
+      "appCategory": "chat",
+      "tags": ["correction", "single-shot"]
+    },
+    {
+      "id": "corr-hanshi-thrice",
+      "kind": "correctionLearning",
+      "precedingText": "正宗",
+      "precedingReadings": ["ㄓㄥˋ", "ㄗㄨㄥ"],
+      "readings": ["ㄏㄢˊ", "ㄕˋ"],
+      "expected": "韓式",
+      "competitors": ["函式"],
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["correction", "repeated"]
+    },
+    {
+      "id": "corr-ceshi-strategist",
+      "kind": "correctionLearning",
+      "precedingText": "一位",
+      "precedingReadings": ["ㄧˊ", "ㄨㄟˋ"],
+      "readings": ["ㄘㄜˋ", "ㄕˋ"],
+      "expected": "策士",
+      "competitors": ["測試"],
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["correction", "repeated"]
+    },
+    {
+      "id": "corr-huichu-draw",
+      "kind": "correctionLearning",
+      "precedingText": "他",
+      "precedingReadings": ["ㄊㄚ"],
+      "readings": ["ㄏㄨㄟˋ", "ㄔㄨ"],
+      "expected": "繪出",
+      "competitors": ["匯出", "會出"],
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["correction", "repeated", "deep-rank"]
+    },
+    {
+      "id": "corr-chengshi-city",
+      "kind": "correctionLearning",
+      "precedingText": "執行",
+      "precedingReadings": ["ㄓˊ", "ㄒㄧㄥˊ"],
+      "readings": ["ㄔㄥˊ", "ㄕˋ"],
+      "expected": "程式",
+      "competitors": ["城市"],
+      "repeatCount": 2,
+      "appCategory": "editor",
+      "tags": ["correction", "tech"]
+    },
+    {
+      "id": "corr-guanxi-kansai",
+      "kind": "correctionLearning",
+      "precedingText": "日本",
+      "precedingReadings": ["ㄖˋ", "ㄅㄣˇ"],
+      "readings": ["ㄍㄨㄢ", "ㄒㄧ"],
+      "expected": "關西",
+      "competitors": ["關係"],
+      "repeatCount": 3,
+      "appCategory": "chat",
+      "tags": ["correction", "repeated"]
+    },
+    {
+      "id": "corr-fujian-attachment",
+      "kind": "correctionLearning",
+      "precedingText": "附上",
+      "precedingReadings": ["ㄈㄨˋ", "ㄕㄤˋ"],
+      "readings": ["ㄈㄨˋ", "ㄐㄧㄢˋ"],
+      "expected": "附件",
+      "competitors": ["復健", "復建"],
+      "repeatCount": 3,
+      "appCategory": "mail",
+      "tags": ["correction", "mail"]
+    }
+  ]
+}

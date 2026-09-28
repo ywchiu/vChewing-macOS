@@ -128,6 +128,32 @@ extension SettingsPanesCocoa {
             prefUITab: .tabDictionary
           )
         }?.boxed()
+        // SmartContext：總開關在前，三個子開關在後（後三者於總開關關閉時一律不生效）。
+        NSStackView.buildSection(width: contentWidth) {
+          UserDef.kSmartContextEnabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+          UserDef.kPersonalLearningV2Enabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+          UserDef.kAppAwareLearningEnabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+          UserDef.kTinyRerankerEnabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+        }?.boxed()
+        // 學習階段打字日誌自成一節：它留的是原文，不該與上面那組排序開關同框。
+        NSStackView.buildSection(width: contentWidth) {
+          UserDef.kTypingJournalEnabled.renderCocoa(
+            fixWidth: contentWidth,
+            prefUITab: .tabDictionary
+          )
+        }?.boxed()
         NSStackView.buildSection(width: contentWidth) {
           NSStackView.build(.vertical) {
             NSStackView.build(.horizontal) {

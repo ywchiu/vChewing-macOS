@@ -64,6 +64,7 @@ public final class MockInputHandler: @MainActor InputHandlerProtocol {
   public var calligrapher = ""
   public var mixedAlnumConfig = MixedAlnumConfig()
   public var furiousConfig = FuriousTypingConfig() // 狂拼模式之執行期狀態
+  public var smartContextConfig = SmartContextRuntimeConfig() // SmartContext 之執行期狀態
   public var composer: Tekkon.Composer = .init()
   public var assembler: Homa.Assembler
   public var isJISKeyboard: (() -> Bool)? = { false }
@@ -95,6 +96,8 @@ public final class MockSession: @MainActor SessionCoreProtocol {
   public var inputHandler: MockInputHandler?
   public var isASCIIMode: Bool = false
   public var clientMitigationLevel: Int = 0
+  /// 模擬客體的 bundle identifier。SmartContext 的 app-aware 測試藉此切換「目前在哪個 app」。
+  public var clientBundleIdentifier: String = "org.atelierInmu.vChewing.LibVanguard.UnitTests"
   /// 預設為 nil（候選窗不存在）；測試需要模擬候選窗已顯示時才指派。
   public var mockCandidateController: MockCandidateController?
   public var isVerticalTyping: Bool = false

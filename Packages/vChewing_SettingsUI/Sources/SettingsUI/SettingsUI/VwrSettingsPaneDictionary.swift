@@ -155,6 +155,26 @@
           UserDef.kReducePOMLifetimeToNoMoreThan12Hours.renderUI()
         }
 
+        // SmartContext：總開關在前，三個子開關在後。
+        // 子開關在總開關關閉時一律不生效（見 `InputHandlerProtocol.isSmartContextEffective`），
+        // 故以 `disabled(_:)` 讓 UI 與實際語義一致，而不是讓使用者勾了卻沒反應。
+        Section {
+          UserDef.kSmartContextEnabled.renderUI()
+          Group {
+            UserDef.kPersonalLearningV2Enabled.renderUI()
+            UserDef.kAppAwareLearningEnabled.renderUI()
+            UserDef.kTinyRerankerEnabled.renderUI()
+          }
+          .disabled(!smartContextEnabled)
+        }
+
+        // 學習階段打字日誌自成一節，刻意**不**掛在 SmartContext 總開關底下：
+        // 上面那一組改的是排序，這一個留的是使用者打過的原文，兩者的風險不同級，
+        // 不該由同一個開關代表、也不該擺在同一個方框裡順手被勾走。
+        Section {
+          UserDef.kTypingJournalEnabled.renderUI()
+        }
+
         Section {
           VStack(alignment: .leading) {
             LabeledContent("i18n:settings.importFromKimoTxt.label") {
@@ -251,10 +271,15 @@
     @State
     private var pendingMergeOldPath: String = ""
 
-    // MARK: - AppStorage Variables（僅保留需經 PathControl 繫結的屬性）
+    // MARK: - AppStorage Variables（僅保留需經 PathControl 繫結、或需在 View 條件中讀取的屬性）
 
     @AppStorage(wrappedValue: "", UserDef.kUserDataFolderSpecified.rawValue)
     private var userDataFolderSpecified: String
+
+    /// SmartContext 的總開關。需在 View 條件中讀取（三個子開關的 `disabled` 狀態隨它變動），
+    /// 故必須走 `@AppStorage` 而非直接讀 `PrefMgr.shared`——後者不會觸發 SwiftUI 重繪。
+    @AppStorage(wrappedValue: false, UserDef.kSmartContextEnabled.rawValue)
+    private var smartContextEnabled: Bool
 
     // MARK: - Main View
 
