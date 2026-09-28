@@ -48,11 +48,6 @@ extension SettingsPanesCocoa {
               fixWidth: contentWidth,
               prefUITab: .tabDevZone
             )
-          UserDef.kDisableKeyboardLayoutOverrideForManagedClients
-            .renderCocoa(
-              fixWidth: contentWidth,
-              prefUITab: .tabDevZone
-            )
         }?.boxed()
         NSStackView.buildSection(width: contentWidth) {
           UserDef.kCheckAbusersOfSecureEventInputAPI.renderCocoa(

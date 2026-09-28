@@ -238,9 +238,6 @@ public final class PrefMgr: PrefMgrProtocol, Sendable {
   @AppProperty(userDef: .kDisableSegmentedThickUnderlineInMarkingModeForManagedClients)
   public var disableSegmentedThickUnderlineInMarkingModeForManagedClients: Bool
 
-  @AppProperty(userDef: .kDisableKeyboardLayoutOverrideForManagedClients)
-  public var disableKeyboardLayoutOverrideForManagedClients: Bool
-
   // MARK: - Settings (Tier 3)
 
   @AppProperty(userDef: .kMaxCandidateLength)

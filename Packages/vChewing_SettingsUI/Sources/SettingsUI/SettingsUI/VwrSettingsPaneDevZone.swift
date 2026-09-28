@@ -23,7 +23,6 @@
           UserDef.kSecurityHardenedCompositionBuffer.renderUI()
           UserDef.kAlwaysUsePCBWithElectronBasedClients.renderUI()
           UserDef.kDisableSegmentedThickUnderlineInMarkingModeForManagedClients.renderUI()
-          UserDef.kDisableKeyboardLayoutOverrideForManagedClients.renderUI()
         } header: {
           Text(
             "i18n:Settings.DevZoneWarning"
